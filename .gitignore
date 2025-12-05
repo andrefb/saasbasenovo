@@ -7,7 +7,7 @@
 # =============================================
 # AMBIENTE E CONFIGURAÇÕES LOCAIS
 # =============================================
-.env
+#.env
 .env.backup
 .env.local
 .env.production
