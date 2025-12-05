@@ -13,7 +13,8 @@ class EnsureUserHasCompany
     {
         $user = Auth::user();
 
-        if (! $user || $request->is('admin*')) {
+        // 1. Ignora se não logado ou se está acessando o domínio base (painel admin)
+        if (! $user || $request->getHost() === config('app.domain')) {
             return $next($request);
         }
 

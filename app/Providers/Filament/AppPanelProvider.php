@@ -30,7 +30,8 @@ class AppPanelProvider extends PanelProvider
     {
         return $panel
             ->id('app')
-            ->path('app')
+            ->path('')
+            ->tenantDomain('{tenant:slug}.' . config('app.domain'))
             ->login()
             ->passwordReset()
             ->registration()
