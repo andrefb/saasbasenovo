@@ -1,0 +1,110 @@
+# =============================================
+# DEPENDÊNCIAS
+# =============================================
+/vendor
+/node_modules
+
+# =============================================
+# AMBIENTE E CONFIGURAÇÕES LOCAIS
+# =============================================
+.env
+.env.backup
+.env.local
+.env.production
+.env.staging
+.env.*.local
+
+# =============================================
+# LARAVEL - STORAGE E CACHE
+# =============================================
+/storage/*.key
+/storage/pail
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/logs/*
+/bootstrap/cache/*
+
+# Manter estrutura de pastas
+!storage/framework/cache/.gitkeep
+!storage/framework/sessions/.gitkeep
+!storage/framework/views/.gitkeep
+!storage/logs/.gitkeep
+!bootstrap/cache/.gitkeep
+
+# =============================================
+# BUILD E ASSETS COMPILADOS
+# =============================================
+/public/build
+/public/hot
+/public/storage
+/public/css/filament
+/public/js/filament
+
+# Vite
+*.local
+
+# =============================================
+# TESTES
+# =============================================
+.phpunit.result.cache
+.phpunit.cache
+/coverage
+/.phpunit.cache
+
+# =============================================
+# IDEs E EDITORES
+# =============================================
+/.fleet
+/.idea
+/.nova
+/.vscode
+/.zed
+*.sublime-project
+*.sublime-workspace
+.phpactor.json
+
+# =============================================
+# SISTEMA OPERACIONAL
+# =============================================
+.DS_Store
+Thumbs.db
+*.log
+
+# =============================================
+# LARAVEL SAIL / DOCKER
+# =============================================
+/.docker
+docker-compose.override.yml
+
+# =============================================
+# HOMESTEAD / VAGRANT
+# =============================================
+Homestead.json
+Homestead.yaml
+.vagrant
+
+# =============================================
+# AWS / CLOUD
+# =============================================
+.aws-sam
+
+# =============================================
+# COMPOSER
+# =============================================
+/auth.json
+
+# =============================================
+# BANCO DE DADOS LOCAL
+# =============================================
+*.sqlite
+*.sqlite-journal
+/database/*.sqlite
+
+# =============================================
+# OUTROS
+# =============================================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
