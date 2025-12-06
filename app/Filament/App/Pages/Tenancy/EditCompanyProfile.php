@@ -2,6 +2,7 @@
 
 namespace App\Filament\App\Pages\Tenancy;
 
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Grid;
 use Filament\Schemas\Components\Section;
@@ -74,18 +75,23 @@ class EditCompanyProfile extends EditTenantProfile
 
                             TextInput::make('website')
                                 ->label('Website')
-                                ->url()
-                                ->prefix('https://'), 
+                                ->prefix('https://')
+                                ->placeholder('seusite.com.br')
+                                ->helperText('Digite apenas o domínio, sem http:// ou www'),
                         ]),
 
                         ComponentsGrid::make(2)->schema([
                             TextInput::make('phone_1')
                                 ->label('Telefone 1')
-                                ->tel(),
+                                ->tel()
+                                ->mask('(99) 99999-9999')
+                                ->placeholder('(11) 99999-9999'),
 
                             TextInput::make('phone_2')
                                 ->label('Telefone 2')
-                                ->tel(),
+                                ->tel()
+                                ->mask('(99) 99999-9999')
+                                ->placeholder('(11) 99999-9999'),
                         ]),
                     ]),
 
@@ -110,23 +116,37 @@ class EditCompanyProfile extends EditTenantProfile
 
                         ComponentsGrid::make(4)->schema([
                             TextInput::make('number')
-                                ->label('Número'),
+                                ->label('Número')
+                                ->columnSpan(1),
 
                             TextInput::make('complement')
-                                ->label('Complemento'),
+                                ->label('Complemento')
+                                ->columnSpan(2),
 
                             TextInput::make('district')
-                                ->label('Bairro'),
-
-                            TextInput::make('city')
-                                ->label('Cidade'),
+                                ->label('Bairro')
+                                ->columnSpan(1),
                         ]),
 
-                        TextInput::make('state')
-                            ->label('UF')
-                            ->maxLength(2)
-                            ->extraInputAttributes(['style' => 'text-transform: uppercase'])
-                            ->dehydrateStateUsing(fn ($state) => strtoupper($state)),
+                        ComponentsGrid::make(4)->schema([
+                            TextInput::make('city')
+                                ->label('Cidade')
+                                ->columnSpan(3),
+
+                            Select::make('state')
+                                ->label('UF')
+                                ->options([
+                                    'AC' => 'AC', 'AL' => 'AL', 'AP' => 'AP', 'AM' => 'AM',
+                                    'BA' => 'BA', 'CE' => 'CE', 'DF' => 'DF', 'ES' => 'ES',
+                                    'GO' => 'GO', 'MA' => 'MA', 'MT' => 'MT', 'MS' => 'MS',
+                                    'MG' => 'MG', 'PA' => 'PA', 'PB' => 'PB', 'PR' => 'PR',
+                                    'PE' => 'PE', 'PI' => 'PI', 'RJ' => 'RJ', 'RN' => 'RN',
+                                    'RS' => 'RS', 'RO' => 'RO', 'RR' => 'RR', 'SC' => 'SC',
+                                    'SP' => 'SP', 'SE' => 'SE', 'TO' => 'TO',
+                                ])
+                                ->searchable()
+                                ->columnSpan(1),
+                        ]),
                     ]),
             ]);
     }
