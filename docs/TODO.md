@@ -1,4 +1,4 @@
-# 🔮 Melhorias Futuras de Segurança
+# 📋 TODO - Melhorias Futuras
 
 **Data de criação:** 06/12/2025  
 **Projeto:** saas-core  
@@ -6,7 +6,44 @@
 
 ---
 
-## 🔐 HTTPS em Produção
+# ☁️ CLOUDINARY - MELHORIAS
+
+## Migrar para Upload Direto (Opção A)
+
+**Quando implementar:** Quando tiver galeria de fotos de empreendimentos ou muitos uploads.
+
+**Benefícios:**
+- Upload direto do navegador para Cloudinary
+- Não consome banda do servidor
+- Mais rápido para imagens grandes
+- Mais escalável
+
+**O que fazer:**
+1. Criar "upload preset" no Cloudinary (unsigned)
+2. Limitar tipos de arquivo e tamanho no preset
+3. Implementar upload via JavaScript no frontend
+4. Backend recebe apenas a URL final
+
+**Código de referência:**
+```javascript
+const uploadDireto = async (file) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', 'seu-preset');
+  
+  const res = await fetch(
+    'https://api.cloudinary.com/v1_1/seu-cloud/upload',
+    { method: 'POST', body: formData }
+  );
+  return res.json();
+};
+```
+
+---
+
+# 🔐 SEGURANÇA
+
+## HTTPS em Produção
 
 ### O que fazer:
 - Configurar certificado SSL com Let's Encrypt
