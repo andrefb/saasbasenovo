@@ -1,2 +1,22 @@
+# Bloqueia todos os crawlers de indexar o site
 User-agent: *
-Disallow:
+Disallow: /
+
+# Bloqueia especificamente os principais bots
+User-agent: Googlebot
+Disallow: /
+
+User-agent: Bingbot
+Disallow: /
+
+User-agent: Yahoo! Slurp
+Disallow: /
+
+User-agent: DuckDuckBot
+Disallow: /
+
+User-agent: Baiduspider
+Disallow: /
+
+User-agent: YandexBot
+Disallow: /
