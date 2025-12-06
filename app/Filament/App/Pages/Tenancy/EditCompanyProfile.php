@@ -39,16 +39,12 @@ class EditCompanyProfile extends EditTenantProfile
                             ->label('Enviar Nova Logo')
                             ->image()
                             ->imageEditor()
-                            ->imageCropAspectRatio('1:1')
-                            ->imageResizeMode('cover')
-                            ->imageResizeTargetWidth('400')
-                            ->imageResizeTargetHeight('400')
                             ->maxSize(2048) // 2MB
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'])
                             ->disk('local')
                             ->directory('temp-uploads')
                             ->visibility('private')
-                            ->dehydrated(false) // Não salva no model diretamente
+                            ->dehydrated(false)
                             ->helperText('Formatos: JPG, PNG, WebP, SVG. Máximo: 2MB. Clique em Salvar para enviar.'),
                         
                         TextInput::make('logo_url')
@@ -292,45 +288,64 @@ class EditCompanyProfile extends EditTenantProfile
     }
 
     /**
-     * Processa o upload da logo antes de salvar.
+     * Sobrescreve o save para processar o upload da logo antes.
      */
-    protected function mutateFormDataBeforeSave(array $data): array
+    public function save(): void
     {
-        // Verifica se há arquivo para upload
-        $logoUpload = $this->form->getState()['logo_upload'] ?? null;
+        // Processa upload da logo antes de salvar
+        $this->processLogoUpload();
         
-        if ($logoUpload) {
-            try {
-                // Pega o primeiro arquivo do array
-                $filename = is_array($logoUpload) ? reset($logoUpload) : $logoUpload;
-                $filePath = storage_path('app/private/temp-uploads/' . $filename);
-                
-                if (file_exists($filePath)) {
-                    $cloudinaryService = app(CloudinaryService::class);
-                    $url = $cloudinaryService->uploadLogo($filePath, $this->tenant->id);
-                    
-                    // Atualiza o logo_url nos dados
-                    $data['logo_url'] = $url;
-                    
-                    // Remove arquivo temporário
-                    @unlink($filePath);
-                    
-                    Notification::make()
-                        ->title('Logo enviada!')
-                        ->body('A logo foi salva no Cloudinary com sucesso.')
-                        ->success()
-                        ->send();
-                }
-            } catch (\Exception $e) {
-                Notification::make()
-                    ->title('Erro ao enviar logo')
-                    ->body('Erro: ' . $e->getMessage())
-                    ->danger()
-                    ->send();
-            }
+        // Chama o save original
+        parent::save();
+    }
+
+    /**
+     * Processa o upload da logo para o Cloudinary.
+     */
+    protected function processLogoUpload(): void
+    {
+        $state = $this->form->getState();
+        $logoUpload = $state['logo_upload'] ?? null;
+        
+        if (!$logoUpload) {
+            return;
         }
-        
-        return $data;
+
+        try {
+            $filename = is_array($logoUpload) ? reset($logoUpload) : $logoUpload;
+            $filePath = storage_path('app/private/temp-uploads/' . $filename);
+            
+            if (!file_exists($filePath)) {
+                return;
+            }
+
+            $cloudinaryService = app(CloudinaryService::class);
+            $url = $cloudinaryService->uploadLogo($filePath, $this->tenant->id);
+            
+            // Atualiza o logo_url no form state
+            $this->form->fill([
+                ...$this->form->getState(),
+                'logo_url' => $url,
+            ]);
+            
+            // Também atualiza diretamente no tenant
+            $this->tenant->update(['logo_url' => $url]);
+            
+            // Remove arquivo temporário
+            @unlink($filePath);
+            
+            Notification::make()
+                ->title('Logo enviada!')
+                ->body('A logo foi salva no Cloudinary com sucesso.')
+                ->success()
+                ->send();
+
+        } catch (\Exception $e) {
+            Notification::make()
+                ->title('Erro ao enviar logo')
+                ->body('Erro: ' . $e->getMessage())
+                ->danger()
+                ->send();
+        }
     }
 }
-
