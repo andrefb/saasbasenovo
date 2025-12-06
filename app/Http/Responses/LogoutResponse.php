@@ -17,7 +17,7 @@ class LogoutResponse implements LogoutResponseContract
         // Em produção normalmente não precisa da porta
         $portSuffix = in_array($port, [80, 443]) ? '' : ':' . $port;
         
-        $url = "{$scheme}://{$domain}{$portSuffix}/login";
+        $url = "{$scheme}://{$domain}{$portSuffix}/?logout=1";
         
         return redirect($url);
     }

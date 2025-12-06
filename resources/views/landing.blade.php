@@ -54,6 +54,27 @@
     </style>
 </head>
 <body class="bg-slate-950 text-white antialiased">
+    {{-- Toast de Logout --}}
+    @if(request()->has('logout'))
+    <div id="logout-toast" class="fixed top-24 left-1/2 transform -translate-x-1/2 z-50 bg-emerald-500 text-white px-6 py-3 rounded-xl shadow-lg flex items-center gap-3 transition-all duration-500 opacity-100">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+        </svg>
+        <span class="font-medium">Sessão encerrada com sucesso!</span>
+    </div>
+    <script>
+        setTimeout(() => {
+            const toast = document.getElementById('logout-toast');
+            if (toast) {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translate(-50%, -20px)';
+                setTimeout(() => toast.remove(), 500);
+            }
+            // Remove o parâmetro da URL sem recarregar
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }, 4000);
+    </script>
+    @endif
     {{-- Header --}}
     <header class="fixed top-0 left-0 right-0 z-50 bg-slate-950/80 backdrop-blur-lg border-b border-slate-800/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
