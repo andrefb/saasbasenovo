@@ -32,7 +32,8 @@ class RegisterCompany extends RegisterTenant
                 TextInput::make('slug')
                     ->label('URL (Slug)')
                     ->required()
-                    ->prefix(request()->getHost() . '/app/')
+                    ->prefix(fn () => '')
+                    ->suffix('.' . config('app.domain'))
                     ->unique(Company::class, 'slug'),
             ]);
     }
