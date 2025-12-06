@@ -2,17 +2,43 @@
 
 namespace App\Services;
 
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Cloudinary\Cloudinary;
+use Cloudinary\Configuration\Configuration;
 use Illuminate\Http\UploadedFile;
 
 class CloudinaryService
 {
+    protected Cloudinary $cloudinary;
+
+    public function __construct()
+    {
+        // Configura usando CLOUDINARY_URL ou variáveis separadas
+        $cloudinaryUrl = env('CLOUDINARY_URL');
+        
+        if ($cloudinaryUrl) {
+            Configuration::instance($cloudinaryUrl);
+        } else {
+            Configuration::instance([
+                'cloud' => [
+                    'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+                    'api_key' => env('CLOUDINARY_API_KEY'),
+                    'api_secret' => env('CLOUDINARY_API_SECRET'),
+                ],
+                'url' => [
+                    'secure' => true,
+                ],
+            ]);
+        }
+
+        $this->cloudinary = new Cloudinary();
+    }
+
     /**
      * Faz upload de uma imagem para o Cloudinary.
      *
      * @param UploadedFile|string $file Arquivo ou caminho do arquivo
      * @param string $folder Pasta no Cloudinary
-     * @param array $options Opções adicionais de transformação
+     * @param array $options Opções adicionais
      * @return string URL da imagem no Cloudinary
      */
     public function upload(UploadedFile|string $file, string $folder = 'logos', array $options = []): string
@@ -20,7 +46,7 @@ class CloudinaryService
         $path = $file instanceof UploadedFile ? $file->getRealPath() : $file;
         
         $defaultOptions = [
-            'folder' => config('cloudinary.folder', 'saas') . '/' . $folder,
+            'folder' => env('CLOUDINARY_FOLDER', 'saas') . '/' . $folder,
             'transformation' => [
                 'width' => 500,
                 'height' => 500,
@@ -32,9 +58,9 @@ class CloudinaryService
 
         $uploadOptions = array_merge($defaultOptions, $options);
 
-        $result = Cloudinary::upload($path, $uploadOptions);
+        $result = $this->cloudinary->uploadApi()->upload($path, $uploadOptions);
 
-        return $result->getSecurePath();
+        return $result['secure_url'];
     }
 
     /**
@@ -42,7 +68,7 @@ class CloudinaryService
      */
     public function uploadLogo(UploadedFile|string $file, string $companyId): string
     {
-        return $this->upload($file, "companies/{$companyId}/logo", [
+        return $this->upload($file, "companies/{$companyId}", [
             'public_id' => 'logo',
             'overwrite' => true,
             'transformation' => [
@@ -60,7 +86,7 @@ class CloudinaryService
      */
     public function delete(string $publicId): bool
     {
-        $result = Cloudinary::destroy($publicId);
-        return $result->getResult() === 'ok';
+        $result = $this->cloudinary->uploadApi()->destroy($publicId);
+        return ($result['result'] ?? '') === 'ok';
     }
 }
