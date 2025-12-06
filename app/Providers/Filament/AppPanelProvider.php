@@ -42,6 +42,10 @@ class AppPanelProvider extends PanelProvider
             ->tenantRegistration(RegisterCompany::class)
             ->tenantProfile(EditCompanyProfile::class)
 
+            // Logo dinâmica baseada no tenant
+            ->brandLogo(fn () => $this->getTenantLogo())
+            ->brandLogoHeight('2.5rem')
+
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -70,5 +74,20 @@ class AppPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ]);
+    }
+
+    /**
+     * Retorna a logo do tenant atual ou o nome do app como fallback.
+     */
+    protected function getTenantLogo(): string|\Illuminate\Contracts\Support\Htmlable|null
+    {
+        $tenant = filament()->getTenant();
+
+        if ($tenant && $tenant->logo_url) {
+            return $tenant->logo_url;
+        }
+
+        // Fallback: retorna o nome do app (será exibido como texto)
+        return null;
     }
 }

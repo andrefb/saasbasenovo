@@ -2,9 +2,12 @@
 
 namespace App\Filament\App\Pages\Tenancy;
 
+use App\Services\CloudinaryService;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\ViewField;
 use Filament\Schemas\Components\Section;
 use Filament\Forms\Form;
 use Filament\Pages\Tenancy\EditTenantProfile;
@@ -29,6 +32,38 @@ class EditCompanyProfile extends EditTenantProfile
     {
         return $form
             ->schema([
+                // LOGO DA EMPRESA
+                Section::make('Logo da Empresa')
+                    ->schema([
+                        FileUpload::make('logo_upload')
+                            ->label('Logo')
+                            ->image()
+                            ->imageEditor()
+                            ->imageCropAspectRatio('1:1')
+                            ->imageResizeMode('cover')
+                            ->imageResizeTargetWidth('400')
+                            ->imageResizeTargetHeight('400')
+                            ->maxSize(2048) // 2MB
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'])
+                            ->disk('local')
+                            ->directory('temp-uploads')
+                            ->visibility('private')
+                            ->dehydrated(false)
+                            ->afterStateUpdated(function ($state, callable $set) {
+                                if ($state) {
+                                    $this->uploadLogoToCloudinary($state, $set);
+                                }
+                            })
+                            ->helperText('Formatos: JPG, PNG, WebP, SVG. Máximo: 2MB. A imagem será redimensionada automaticamente.'),
+                        
+                        TextInput::make('logo_url')
+                            ->label('URL da Logo')
+                            ->disabled()
+                            ->dehydrated(true)
+                            ->helperText('URL gerada automaticamente após upload'),
+                    ])
+                    ->columns(2),
+
                 // IDENTIFICAÇÃO
                 Section::make('Identificação')
                     ->schema([
@@ -259,5 +294,49 @@ class EditCompanyProfile extends EditTenantProfile
         $portSuffix = in_array($port, [80, 443]) ? '' : ':' . $port;
         
         return "{$scheme}://{$tenant->slug}.{$domain}{$portSuffix}/";
+    }
+
+    /**
+     * Faz upload da logo para o Cloudinary.
+     */
+    protected function uploadLogoToCloudinary($state, callable $set): void
+    {
+        if (!$state) return;
+
+        try {
+            // Pega o arquivo do storage temporário
+            $filePath = storage_path('app/private/temp-uploads/' . $state);
+            
+            if (!file_exists($filePath)) {
+                Notification::make()
+                    ->title('Erro no upload')
+                    ->body('Arquivo não encontrado.')
+                    ->danger()
+                    ->send();
+                return;
+            }
+
+            $cloudinaryService = app(CloudinaryService::class);
+            $url = $cloudinaryService->uploadLogo($filePath, $this->tenant->id);
+
+            // Atualiza o campo logo_url
+            $set('logo_url', $url);
+
+            // Remove arquivo temporário
+            @unlink($filePath);
+
+            Notification::make()
+                ->title('Logo enviada!')
+                ->body('A logo foi salva com sucesso.')
+                ->success()
+                ->send();
+
+        } catch (\Exception $e) {
+            Notification::make()
+                ->title('Erro ao enviar logo')
+                ->body('Tente novamente. Erro: ' . $e->getMessage())
+                ->danger()
+                ->send();
+        }
     }
 }
