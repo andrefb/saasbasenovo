@@ -32,4 +32,10 @@ class EditProfile extends BaseEditProfile
                 $this->getPasswordConfirmationFormComponent(),
             ]);
     }
+
+    // Redireciona para o dashboard após salvar (apenas painel App)
+    protected function getRedirectUrl(): ?string
+    {
+        return '/'; // Vai para a raiz do subdomínio da empresa
+    }
 }

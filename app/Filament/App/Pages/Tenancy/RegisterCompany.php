@@ -34,7 +34,10 @@ class RegisterCompany extends RegisterTenant
                     ->required()
                     ->prefix(fn () => '')
                     ->suffix('.' . config('app.domain'))
-                    ->unique(Company::class, 'slug'),
+                    ->unique(Company::class, 'slug')
+                    ->validationMessages([
+                        'unique' => 'Este endereço já está sendo usado por outra empresa.',
+                    ]),
             ]);
     }
 
