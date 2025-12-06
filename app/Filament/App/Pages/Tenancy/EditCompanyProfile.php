@@ -75,7 +75,7 @@ class EditCompanyProfile extends EditTenantProfile
                             TextInput::make('website')
                                 ->label('Website')
                                 ->url()
-                                ->prefix('https://'),
+                                ->prefix('https://'), 
                         ]),
 
                         ComponentsGrid::make(2)->schema([
