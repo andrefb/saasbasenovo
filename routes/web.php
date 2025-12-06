@@ -3,8 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OnboardingController;
 
+// Redireciona raiz para o painel Filament (ele cuida do tenant)
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 
 
