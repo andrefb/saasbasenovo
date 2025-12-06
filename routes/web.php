@@ -4,8 +4,17 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\OnboardingController;
 
-// Rota raiz - redireciona baseado no estado do usuário
+// Rota raiz - mostra landing page ou redireciona baseado no estado
 Route::get('/', function () {
+    $host = request()->getHost();
+    $domain = config('app.domain');
+    
+    // Se é o domínio raiz (sem subdomínio), mostra landing page pública
+    if ($host === $domain) {
+        return view('landing');
+    }
+    
+    // Se tem subdomínio, comportamento do tenant
     // Se não está logado, vai para login
     if (!Auth::check()) {
         return redirect('/login');
@@ -19,7 +28,6 @@ Route::get('/', function () {
     // Se tem empresa, pega a primeira e redireciona pro subdomínio dela
     $company = Auth::user()->companies()->first();
     $scheme = request()->secure() ? 'https' : 'http';
-    $domain = config('app.domain');
     $port = request()->getPort();
     $portSuffix = in_array($port, [80, 443]) ? '' : ':' . $port;
     
