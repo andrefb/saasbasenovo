@@ -131,7 +131,7 @@ class User extends Authenticatable implements FilamentUser, HasTenants
         if ($panel->getId() === 'admin') {
             return $this->is_super_admin
                 && $this->is_active
-                && $this->email === 'figueiraujo@gmail.com';
+                && $this->email === config('app.super_admin_email');
         }
 
         if ($panel->getId() === 'app') {

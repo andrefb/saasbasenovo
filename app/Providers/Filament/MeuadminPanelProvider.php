@@ -26,8 +26,9 @@ class MeuadminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('meuadmin')
+            ->path('meuadmin')  // Path em vez de subdomain - evita conflito com multi-tenancy
             ->login()
+            // SEM registration() e SEM passwordReset() - apenas login direto
 
             ->colors([
                 'primary' => Color::Amber,

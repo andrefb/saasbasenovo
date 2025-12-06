@@ -68,6 +68,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Super Admin Email (Segurança Extra)
+    |--------------------------------------------------------------------------
+    |
+    | Email do super administrador. Usado como verificação extra além do
+    | campo is_super_admin para prevenir acessos não autorizados ao painel admin.
+    |
+    */
+
+    'super_admin_email' => env('SUPER_ADMIN_EMAIL'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |
