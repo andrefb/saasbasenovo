@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Invoice extends Model
 {
+    use BelongsToTenant;
+
     protected $fillable = [
         'company_id',
         'subscription_id',
@@ -22,9 +25,9 @@ class Invoice extends Model
     ];
 
     protected $casts = [
-
         'due_date' => 'datetime',
         'paid_at' => 'datetime',
+        'metadata' => 'array',
     ];
 
     // Helper para exibir valor formatado
@@ -35,20 +38,8 @@ class Invoice extends Model
         );
     }
 
-    public function company(): BelongsTo
-    {
-        return $this->belongsTo(Company::class);
-    }
-
     public function subscription(): BelongsTo
     {
         return $this->belongsTo(Subscription::class);
-    }
-
-            protected function casts(): array
-    {
-        return [
-            'metadata' => 'array',
-        ];
     }
 }

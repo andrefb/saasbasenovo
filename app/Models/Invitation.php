@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Invitation extends Model
 {
+    use BelongsToTenant;
     protected $fillable = [
         'company_id',
         'inviter_id',
@@ -21,12 +23,6 @@ class Invitation extends Model
         'expires_at' => 'datetime',
         'accepted_at' => 'datetime',
     ];
-
-    // Empresa para a qual foi convidado
-    public function company(): BelongsTo
-    {
-        return $this->belongsTo(Company::class);
-    }
 
     // Quem convidou
     public function inviter(): BelongsTo

@@ -13,6 +13,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         // Previne indexação por search engines (Google, Bing, etc)
         $middleware->append(\App\Http\Middleware\NoIndexMiddleware::class);
+        
+        // Headers de segurança (XSS, clickjacking, CSP)
+        $middleware->append(\App\Http\Middleware\SecurityHeaders::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

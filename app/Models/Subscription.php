@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Subscription extends Model
 {
-
+    use BelongsToTenant;
     use SoftDeletes;
 
     protected $fillable = [
@@ -34,11 +35,6 @@ class Subscription extends Model
         'current_period_end' => 'datetime',
         'metadata' => 'array',
     ];
-
-    public function company(): BelongsTo
-    {
-        return $this->belongsTo(Company::class);
-    }
 
     public function plan(): BelongsTo
     {
