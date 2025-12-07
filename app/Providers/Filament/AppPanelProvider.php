@@ -46,6 +46,13 @@ class AppPanelProvider extends PanelProvider
             ->brandLogo(fn () => $this->getTenantLogo())
             ->brandLogoHeight('2.5rem')
 
+            // Centro de notificações (sininho)
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('30s')
+
+            // Sidebar colapsável no desktop
+            ->sidebarCollapsibleOnDesktop()
+
             ->colors([
                 'primary' => Color::Amber,
             ])
