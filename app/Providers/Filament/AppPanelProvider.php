@@ -47,17 +47,15 @@ class AppPanelProvider extends PanelProvider
             ->brandLogoHeight('2.5rem')
 
             // Logo no mobile (depois do hamburger)
+            // Logo no mobile (logo após o hamburger)
             ->renderHook(
-                \Filament\View\PanelsRenderHook::SIDEBAR_NAV_START,
+                'panels::topbar.start',
                 fn () => $this->renderMobileLogo()
             )
 
             // Centro de notificações (sininho)
             ->databaseNotifications()
             ->databaseNotificationsPolling('30s')
-
-            // Sidebar colapsável no desktop
-            ->sidebarCollapsibleOnDesktop()
 
             ->colors([
                 'primary' => Color::Amber,
@@ -116,15 +114,7 @@ class AppPanelProvider extends PanelProvider
         }
 
         return new \Illuminate\Support\HtmlString(
-            '
-            <style>
-                .fi-topbar-open-sidebar-btn, .fi-topbar-close-sidebar-btn {
-                    order: -1 !important;
-                    margin-right: 0.5rem;
-                }
-            </style>
-            <img src="' . e($tenant->logo_url) . '" alt="Logo" class="h-8 md:hidden" style="max-width: 120px; object-fit: contain;" />
-            '
+            '<img src="' . e($tenant->logo_url) . '" alt="Logo" class="h-8 md:hidden ml-2" style="max-width: 120px; object-fit: contain;" />'
         );
     }
 }
