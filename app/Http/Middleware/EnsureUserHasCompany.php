@@ -22,14 +22,13 @@ class EnsureUserHasCompany
         if (! $user->hasCompany()) {
 
             // 3. IMPORTANTE: Evitar Loop Infinito
-            // Se ele já estiver na página de criar empresa, DEIXA PASSAR.
-            // Se tentarmos redirecionar quem já está lá, o navegador trava.
-            if ($request->routeIs('filament.app.tenant.registration')) {
+            // Se ele já estiver na página de criar empresa (admin ou site), DEIXA PASSAR.
+            if ($request->routeIs('filament.app.tenant.registration') || $request->routeIs('company.create') || $request->routeIs('company.store')) {
                 return $next($request);
             }
 
-            // 4. Se não tem empresa e tá tentando acessar o dashboard -> Redireciona
-            return redirect()->route('filament.app.tenant.registration');
+            // 4. Se não tem empresa e tá tentando acessar o dashboard -> Redireciona para criação manual (sem subdomínio)
+            return redirect()->route('company.create');
         }
 
         return $next($request);

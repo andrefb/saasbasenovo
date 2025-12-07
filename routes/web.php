@@ -9,12 +9,26 @@ Route::get('/', function () {
     $host = request()->getHost();
     $domain = config('app.domain');
     
-    // Se é o domínio raiz (sem subdomínio), mostra landing page pública
+    // Se é o domínio raiz (sem subdomínio)
     if ($host === $domain) {
+        // Se estiver logado e NÃO tiver empresa, manda criar
+        if (Auth::check() && !Auth::user()->hasCompany()) {
+            return redirect()->route('company.create');
+        }
+
+        // Se estiver logado e TIVER empresa, manda pro painel da primeira empresa
+        if (Auth::check() && Auth::user()->hasCompany()) {
+            $company = Auth::user()->companies()->first();
+            $scheme = request()->secure() ? 'https' : 'http';
+            $port = request()->getPort();
+            $portSuffix = in_array($port, [80, 443]) ? '' : ':' . $port;
+            
+            return redirect("{$scheme}://{$company->slug}.{$domain}{$portSuffix}");
+        }
+
+        // Se não logado, mostra landing page pública
         return view('landing');
     }
-    
-    // Se tem subdomínio, comportamento do tenant
     // Se não está logado, vai para login
     if (!Auth::check()) {
         return redirect('/login');
