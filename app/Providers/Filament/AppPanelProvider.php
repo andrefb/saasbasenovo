@@ -42,16 +42,9 @@ class AppPanelProvider extends PanelProvider
             ->tenantRegistration(RegisterCompany::class)
             ->tenantProfile(EditCompanyProfile::class)
 
-            // Logo dinâmica baseada no tenant
+            // Logo dinâmica baseada no tenant (Filament já exibe corretamente em mobile e desktop)
             ->brandLogo(fn () => $this->getTenantLogo())
             ->brandLogoHeight('2.5rem')
-
-            // Logo no mobile (depois do hamburger)
-            // Logo no mobile (logo após o hamburger)
-            ->renderHook(
-                'panels::topbar.start',
-                fn () => $this->renderMobileLogo()
-            )
 
             // Centro de notificações (sininho)
             ->databaseNotifications()
@@ -100,21 +93,5 @@ class AppPanelProvider extends PanelProvider
 
         // Fallback: retorna o nome do app (será exibido como texto)
         return null;
-    }
-
-    /**
-     * Renderiza a logo no topbar mobile.
-     */
-    protected function renderMobileLogo(): \Illuminate\Contracts\Support\Htmlable|string
-    {
-        $tenant = filament()->getTenant();
-
-        if (!$tenant || !$tenant->logo_url) {
-            return '';
-        }
-
-        return new \Illuminate\Support\HtmlString(
-            '<img src="' . e($tenant->logo_url) . '" alt="Logo" class="h-8 md:hidden ml-2" style="max-width: 120px; object-fit: contain;" />'
-        );
     }
 }
