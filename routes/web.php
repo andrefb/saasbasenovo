@@ -11,9 +11,9 @@ Route::get('/', function () {
     
     // Se é o domínio raiz (sem subdomínio)
     if ($host === $domain) {
-        // Se estiver logado e NÃO tiver empresa, manda criar
+        // Se estiver logado e NÃO tiver empresa, manda criar (na rota do Filament /new)
         if (Auth::check() && !Auth::user()->hasCompany()) {
-            return redirect()->route('company.create');
+            return redirect()->route('filament.app.tenant.registration');
         }
 
         // Se estiver logado e TIVER empresa, manda pro painel da primeira empresa
