@@ -46,9 +46,9 @@ class AppPanelProvider extends PanelProvider
             ->brandLogo(fn () => $this->getTenantLogo())
             ->brandLogoHeight('2.5rem')
 
-            // Logo no mobile (entre hamburger e notificações)
+            // Logo no mobile (depois do hamburger)
             ->renderHook(
-                'panels::topbar.start',
+                \Filament\View\PanelsRenderHook::SIDEBAR_NAV_START,
                 fn () => $this->renderMobileLogo()
             )
 
@@ -116,7 +116,15 @@ class AppPanelProvider extends PanelProvider
         }
 
         return new \Illuminate\Support\HtmlString(
-            '<img src="' . e($tenant->logo_url) . '" alt="Logo" class="h-8 md:hidden ml-2" style="max-width: 120px; object-fit: contain;" />'
+            '
+            <style>
+                .fi-topbar-open-sidebar-btn, .fi-topbar-close-sidebar-btn {
+                    order: -1 !important;
+                    margin-right: 0.5rem;
+                }
+            </style>
+            <img src="' . e($tenant->logo_url) . '" alt="Logo" class="h-8 md:hidden" style="max-width: 120px; object-fit: contain;" />
+            '
         );
     }
 }
