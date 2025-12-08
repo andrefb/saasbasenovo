@@ -28,17 +28,19 @@ class AppPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        return $panel
+        // Domínio opcional para produção (ex: app.meudominio.com)
+        // Em local fica vazio = usa localhost:8000/app/{tenant}
+        $appDomain = config('filament.app_domain');
+
+        $panel = $panel
             ->id('app')
-            ->path('')
-            ->tenantDomain('{tenant:slug}.' . config('app.domain'))
+            ->path('app')  // Path-based: /app/{tenant}
             ->login()
             ->passwordReset()
             ->registration()
             ->darkMode(false) // Desativa o Dark Mode
             ->profile(EditProfile::class)
-            ->tenant(
-                Company::class, slugAttribute: 'slug')
+            ->tenant(Company::class, slugAttribute: 'slug')
             ->tenantRegistration(RegisterCompany::class)
             ->tenantProfile(EditCompanyProfile::class)
 
@@ -78,6 +80,13 @@ class AppPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ]);
+
+        // Se tiver domínio configurado (produção), usa subdomínio
+        if ($appDomain) {
+            $panel->domain($appDomain);
+        }
+
+        return $panel;
     }
 
     /**

@@ -10,4 +10,13 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
+    server: {
+        host: '0.0.0.0', // Permite acessar do Windows
+        hmr: {
+            host: 'localhost', // Garante que o Hot Reload funcione
+        },
+        watch: {
+            usePolling: true, // Força o sistema a verificar mudanças de arquivo (Correção para WSL)
+        },
+    },
 });

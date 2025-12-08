@@ -4,53 +4,36 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\OnboardingController;
 
-// Rota raiz - mostra landing page ou redireciona baseado no estado
+/*
+|--------------------------------------------------------------------------
+| Rotas Web
+|--------------------------------------------------------------------------
+|
+| Estrutura:
+| - / → Landing page pública
+| - /app/{tenant} → Painel Filament das empresas (gerenciado pelo Filament)
+| - /meuadmin → Painel do super admin (gerenciado pelo Filament)
+|
+*/
+
+// Rota raiz - Landing page ou redirecionamento
 Route::get('/', function () {
-    $host = request()->getHost();
-    $domain = config('app.domain');
-    
-    // Se é o domínio raiz (sem subdomínio)
-    if ($host === $domain) {
-        // Se estiver logado e NÃO tiver empresa, manda criar (na rota do Filament /new)
-        if (Auth::check() && !Auth::user()->hasCompany()) {
-            return redirect()->route('filament.app.tenant.registration');
-        }
-
-        // Se estiver logado e TIVER empresa, manda pro painel da primeira empresa
-        if (Auth::check() && Auth::user()->hasCompany()) {
-            $company = Auth::user()->companies()->first();
-            $scheme = request()->secure() ? 'https' : 'http';
-            $port = request()->getPort();
-            $portSuffix = in_array($port, [80, 443]) ? '' : ':' . $port;
-            
-            return redirect("{$scheme}://{$company->slug}.{$domain}{$portSuffix}");
-        }
-
-        // Se não logado, mostra landing page pública
+    // Se não logado, mostra landing page pública
+    if (!Auth::check()) {
         return view('landing');
     }
-    // Se não está logado, vai para login
-    if (!Auth::check()) {
-        return redirect('/login');
-    }
-    
-    // Se está logado mas não tem empresa, vai criar empresa
+
+    // Se logado mas não tem empresa, manda criar
     if (!Auth::user()->hasCompany()) {
-        return redirect('/new');
+        return redirect()->route('filament.app.tenant.registration');
     }
-    
-    // Se tem empresa, pega a primeira e redireciona pro subdomínio dela
+
+    // Se logado e tem empresa, redireciona para o painel da primeira empresa
     $company = Auth::user()->companies()->first();
-    $scheme = request()->secure() ? 'https' : 'http';
-    $port = request()->getPort();
-    $portSuffix = in_array($port, [80, 443]) ? '' : ':' . $port;
-    
-    return redirect("{$scheme}://{$company->slug}.{$domain}{$portSuffix}");
+    return redirect("/app/{$company->slug}");
 });
 
-
-
-// Grupo protegido por autenticação (só acessa se tiver logado)
+// Grupo protegido por autenticação
 Route::middleware(['auth'])->group(function () {
     Route::get('/new-company', [OnboardingController::class, 'create'])->name('company.create');
     Route::post('/new-company', [OnboardingController::class, 'store'])->name('company.store');

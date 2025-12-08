@@ -13,24 +13,22 @@ class EnsureUserHasCompany
     {
         $user = Auth::user();
 
-        // 1. Ignora se não logado ou se está acessando o domínio base (painel admin)
-        if (! $user || $request->getHost() === config('app.domain')) {
+        // Se não logado, deixa passar (vai cair no auth middleware depois)
+        if (!$user) {
             return $next($request);
         }
 
-        // 2. Verifica se o usuário tem alguma empresa
-        if (! $user->hasCompany()) {
-
-            // 3. IMPORTANTE: Evitar Loop Infinito
-            // Se ele já estiver na página de criar empresa (admin ou site), DEIXA PASSAR.
-            if ($request->routeIs('filament.app.tenant.registration') || $request->routeIs('company.create')) {
-                return $next($request);
-            }
-
-            // 4. Se não tem empresa e tá tentando acessar o dashboard -> Redireciona para criação no Filament (tem layout correto)
-            return redirect()->route('filament.app.tenant.registration');
+        // Se o usuário tem empresa, deixa passar
+        if ($user->hasCompany()) {
+            return $next($request);
         }
 
-        return $next($request);
+        // Evitar Loop Infinito: se já está na página de criar empresa, deixa passar
+        if ($request->routeIs('filament.app.tenant.registration') || $request->routeIs('company.create')) {
+            return $next($request);
+        }
+
+        // Não tem empresa -> Redireciona para criação
+        return redirect()->route('filament.app.tenant.registration');
     }
 }
