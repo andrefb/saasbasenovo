@@ -60,6 +60,10 @@ class EditCompanyProfile extends EditTenantProfile
                         ComponentsGrid::make(2)->schema([
                             TextInput::make('cnpj')
                                 ->mask('99.999.999/9999-99')
+                                ->unique('companies', 'cnpj', ignoreRecord: true)
+                                ->validationMessages([
+                                    'unique' => 'Este CNPJ já está cadastrado em outra empresa.',
+                                ])
                                 ->live(onBlur: true)
                                 ->afterStateUpdated(function ($state, callable $set) {
                                     $this->consultaCNPJ($state, $set);
@@ -81,7 +85,7 @@ class EditCompanyProfile extends EditTenantProfile
                             TextInput::make('slug')
                                 ->label('URL do Sistema')
                                 ->required()
-                                ->suffix('.' . config('app.domain'))
+                                ->prefix(config('app.url') . '/app/')
                                 ->unique('companies', 'slug', ignoreRecord: true)
                                 ->validationMessages([
                                     'unique' => 'Este endereço já está sendo usado por outra empresa.',
@@ -276,14 +280,8 @@ class EditCompanyProfile extends EditTenantProfile
 
     protected function getRedirectUrl(): ?string
     {
-        // Redireciona para o novo subdomínio (caso o slug tenha mudado)
-        $tenant = $this->tenant;
-        $scheme = request()->secure() ? 'https' : 'http';
-        $domain = config('app.domain');
-        $port = request()->getPort();
-        $portSuffix = in_array($port, [80, 443]) ? '' : ':' . $port;
-        
-        return "{$scheme}://{$tenant->slug}.{$domain}{$portSuffix}/";
+        // Sempre redireciona para o dashboard do tenant (com novo slug se foi alterado)
+        return config('app.url') . '/app/' . $this->tenant->slug;
     }
 
     /**

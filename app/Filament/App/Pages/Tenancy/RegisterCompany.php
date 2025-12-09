@@ -32,8 +32,8 @@ class RegisterCompany extends RegisterTenant
                 TextInput::make('slug')
                     ->label('URL (Slug)')
                     ->required()
-                    ->prefix('/app/')
-                    ->helperText('Sua empresa ficará acessível em: /app/seu-slug')
+                    ->prefix(config('app.url') . '/app/')
+                    ->helperText('Sua empresa ficará acessível nesta URL')
                     ->unique(Company::class, 'slug')
                     ->validationMessages([
                         'unique' => 'Este endereço já está sendo usado por outra empresa.',

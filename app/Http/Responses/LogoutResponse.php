@@ -9,16 +9,8 @@ class LogoutResponse implements LogoutResponseContract
 {
     public function toResponse($request): RedirectResponse
     {
-        // Redireciona para o domínio principal (sem subdomínio do tenant)
-        $scheme = $request->secure() ? 'https' : 'http';
-        $domain = config('app.domain');
-        $port = $request->getPort();
-        
-        // Em produção normalmente não precisa da porta
-        $portSuffix = in_array($port, [80, 443]) ? '' : ':' . $port;
-        
-        $url = "{$scheme}://{$domain}{$portSuffix}/?logout=1";
-        
-        return redirect($url);
+        // Sempre redireciona para a raiz da aplicação (landing page)
+        $appUrl = config('app.url');
+        return redirect($appUrl . '/?logout=1');
     }
 }

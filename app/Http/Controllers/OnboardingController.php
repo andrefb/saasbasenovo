@@ -40,7 +40,7 @@ class OnboardingController extends Controller
             'is_owner' => true,
         ]);
 
-        // 5. Redireciona para o App (agora ele tem empresa, o middleware vai deixar passar)
-        return redirect('/app');
+        // 5. Redireciona para o App da empresa recém-criada
+        return redirect("/app/{$company->slug}");
     }
 }
