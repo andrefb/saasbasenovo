@@ -281,7 +281,7 @@ class EditCompanyProfile extends EditTenantProfile
     protected function getRedirectUrl(): ?string
     {
         // Sempre redireciona para o dashboard do tenant (com novo slug se foi alterado)
-        return config('app.url') . '/app/' . $this->tenant->slug;
+        return url('/app/' . $this->tenant->slug);
     }
 
     /**

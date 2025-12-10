@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\OnboardingController;
+use App\Http\Controllers\TabelaPublicaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,3 +39,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/new-company', [OnboardingController::class, 'create'])->name('company.create');
     Route::post('/new-company', [OnboardingController::class, 'store'])->name('company.store');
 });
+
+// Rotas públicas de tenant (sem autenticação)
+// Usamos /p/ (público) para evitar conflito com /app/ do Filament
+Route::get('/p/{slug}/tabela', [TabelaPublicaController::class, 'show'])->name('tabela.publica');
