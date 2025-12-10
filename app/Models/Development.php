@@ -29,10 +29,27 @@ class Development extends Model
         'state',
         'is_active',
         'updated_by',
+        // Condições de Pagamento
+        'down_payment_percent',
+        'monthly_percent',
+        'monthly_installments',
+        'annual_percent',
+        'annual_installments',
+        'keys_percent',
+        'post_keys_percent',
+        'post_keys_installments',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'down_payment_percent' => 'decimal:2',
+        'monthly_percent' => 'decimal:2',
+        'monthly_installments' => 'integer',
+        'annual_percent' => 'decimal:2',
+        'annual_installments' => 'integer',
+        'keys_percent' => 'decimal:2',
+        'post_keys_percent' => 'decimal:2',
+        'post_keys_installments' => 'integer',
     ];
 
     public function company(): BelongsTo
