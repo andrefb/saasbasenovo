@@ -78,4 +78,9 @@ class Company extends Model
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
+
+    public function developments(): HasMany
+    {
+        return $this->hasMany(Development::class);
+    }
 }
