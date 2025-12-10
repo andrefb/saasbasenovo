@@ -30,6 +30,28 @@ class TabelaPublicaController extends Controller
     }
 
     /**
+     * Display the public sales table (version 2 - Google Style) for a company.
+     */
+    public function show2(string $slug)
+    {
+        $company = Company::where('slug', $slug)
+            ->where('is_active', true)
+            ->first();
+
+        if (!$company) {
+            abort(404, 'Empresa não encontrada');
+        }
+
+        // Mock data for prototype - will be replaced with real data later
+        $units = $this->getMockUnits();
+
+        return view('public.tabela2', [
+            'company' => $company,
+            'units' => $units,
+        ]);
+    }
+
+    /**
      * Generate mock units for prototype.
      */
     private function getMockUnits(): array

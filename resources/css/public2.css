@@ -1,0 +1,291 @@
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500;700&display=swap');
+@import 'tailwindcss';
+
+@source '../views/public/**/*.blade.php';
+@source '../views/layouts/public.blade.php';
+@source '../views/components/public/**/*.blade.php';
+
+@theme {
+    --font-sans: 'Google Sans', 'Roboto', ui-sans-serif, system-ui, sans-serif;
+
+    /* Google Blue - Primary */
+    --color-primary: #1a73e8;
+    --color-primary-light: #e8f0fe;
+    --color-primary-foreground: #ffffff;
+
+    /* Google Green - Success */
+    --color-success: #1e8e3e;
+    --color-success-light: #e6f4ea;
+    --color-success-foreground: #ffffff;
+
+    /* Google Yellow - Warning */
+    --color-warning: #f9ab00;
+    --color-warning-light: #fef7e0;
+    --color-warning-foreground: #1f1f1f;
+
+    /* Google Red - Destructive */
+    --color-destructive: #d93025;
+    --color-destructive-light: #fce8e6;
+    --color-destructive-foreground: #ffffff;
+
+    /* Material You - Neutral tones */
+    --color-background: #f8fafc;
+    --color-foreground: #1f1f1f;
+    --color-card: #ffffff;
+    --color-muted: #f1f3f4;
+    --color-muted-foreground: #5f6368;
+    --color-border: #e0e0e0;
+
+    /* Google-style Shadows */
+    --shadow-soft: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+    --shadow-card: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 2px 6px 2px rgba(60, 64, 67, 0.15);
+    --shadow-elevated: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
+
+    /* Google Radius - More rounded */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-full: 9999px;
+}
+
+/* Base styles - Google Clean */
+body {
+    font-family: var(--font-sans);
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Card styles - Material You */
+.card-elevated {
+    background-color: var(--color-card);
+    border-radius: var(--radius-xl);
+    border: none;
+    box-shadow: var(--shadow-card);
+}
+
+.card-soft {
+    background-color: var(--color-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+}
+
+/* Card status indicators - Google Style */
+.card-status-sold {
+    border-left: 4px solid var(--color-destructive);
+    background: linear-gradient(90deg, var(--color-destructive-light) 0%, var(--color-card) 100%);
+}
+
+.card-status-reserved {
+    border-left: 4px solid var(--color-warning);
+    background: linear-gradient(90deg, var(--color-warning-light) 0%, var(--color-card) 100%);
+}
+
+.card-status-available {
+    border-left: 4px solid var(--color-success);
+}
+
+/* Status Ribbon - Google Pill Style */
+.status-ribbon {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 4px 12px;
+    text-align: center;
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: var(--radius-full);
+    z-index: 10;
+    box-shadow: var(--shadow-soft);
+    transform: none;
+}
+
+.status-ribbon-sold {
+    background-color: var(--color-destructive);
+    color: white;
+}
+
+.status-ribbon-reserved {
+    background-color: var(--color-warning);
+    color: var(--color-warning-foreground);
+}
+
+/* Row status - Table */
+.row-sold {
+    background: linear-gradient(90deg, var(--color-destructive-light) 0%, transparent 50%);
+}
+
+.row-reserved {
+    background: linear-gradient(90deg, var(--color-warning-light) 0%, transparent 50%);
+}
+
+/* Button styles - Material You */
+.btn-primary {
+    background-color: var(--color-primary);
+    color: var(--color-primary-foreground);
+    font-weight: 500;
+    padding: 10px 24px;
+    border-radius: var(--radius-full);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-soft);
+}
+
+.btn-primary:hover {
+    background-color: #1557b0;
+    box-shadow: var(--shadow-elevated);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-primary);
+    font-weight: 500;
+    padding: 10px 24px;
+    border-radius: var(--radius-full);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-primary-light);
+    border-color: var(--color-primary);
+}
+
+/* Modal styles - Material You */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.32);
+    z-index: 50;
+}
+
+.modal-content {
+    background-color: var(--color-card);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-elevated);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Table styles - Google Sheets inspired */
+.table-header {
+    background-color: var(--color-muted);
+    color: var(--color-muted-foreground);
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* Thumbnail styles */
+.thumbnail-plant {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-md);
+    object-fit: cover;
+    border: 2px solid transparent;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.thumbnail-plant:hover {
+    border-color: var(--color-primary);
+    transform: scale(1.05);
+}
+
+/* Card thumbnail */
+.card-thumbnail {
+    width: 88px;
+    height: 88px;
+    border-radius: var(--radius-lg);
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+/* Animations - Google style */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-slide-up {
+    animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-scale-in {
+    animation: scaleIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Header logo */
+.header-logo {
+    max-height: 40px;
+    width: auto;
+    object-fit: contain;
+}
+
+/* Link styles - Google */
+.link-enter {
+    color: var(--color-primary);
+    font-weight: 500;
+    font-size: 0.875rem;
+    padding: 8px 16px;
+    border-radius: var(--radius-full);
+    transition: background-color 0.2s;
+}
+
+.link-enter:hover {
+    background-color: var(--color-primary-light);
+}
+
+/* Chip/Badge style - Google */
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 500;
+    background-color: var(--color-muted);
+    color: var(--color-muted-foreground);
+}
+
+.chip-primary {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+}

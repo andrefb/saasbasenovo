@@ -43,3 +43,4 @@ Route::middleware(['auth'])->group(function () {
 // Rotas públicas de tenant (sem autenticação)
 // Usamos /p/ (público) para evitar conflito com /app/ do Filament
 Route::get('/p/{slug}/tabela', [TabelaPublicaController::class, 'show'])->name('tabela.publica');
+Route::get('/p/{slug}/tabela2', [TabelaPublicaController::class, 'show2'])->name('tabela.publica2');
