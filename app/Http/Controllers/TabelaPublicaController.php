@@ -72,11 +72,9 @@ class TabelaPublicaController extends Controller
         // 3. Buscar unidades ativas (eager loading já configurado no model)
         $query = $development->units()
             ->where('is_active', true);
-
-        // Filtrar vendidos se configurado
-        if (!config('app.show_sold_units', true)) {
-            $query->where('status', '!=', 'sold');
-        }
+            
+        // Na tabela visual (nova), mostramos todas as unidades, inclusive vendidas
+        // O filtro de vendidos fica apenas na tabela2 (lista de preços)
 
         $units = $query->orderBy('number')
             ->get();
@@ -107,10 +105,19 @@ class TabelaPublicaController extends Controller
             'floor_plan' => $unit->floor_plan_url ?? 'https://placehold.co/400x300/e2e8f0/64748b?text=Sem+Planta',
         ])->toArray();
 
+        // 5. Agrupar unidades por andar para o grid visual (COM vendidos, se existirem)
+        $unitsByFloor = collect($unitsData)->groupBy('floor')->toArray();
+
+        // 6. Filtrar unidades para a lista de preços (SEM vendidos, se config assim determinar)
+        if (!config('app.show_sold_units', true)) {
+            $unitsData = array_filter($unitsData, fn($unit) => $unit['status'] !== 'sold');
+        }
+
         return view('public.tabela', [
             'company' => $company,
             'development' => $development,
             'units' => $unitsData,
+            'unitsByFloor' => $unitsByFloor,
         ]);
     }
 

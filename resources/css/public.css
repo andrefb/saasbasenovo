@@ -162,20 +162,58 @@ body {
 }
 
 .text-price {
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
+    /* Alterado de mono para sans */
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 700;
+    /* Mais peso para números */
     color: var(--color-text-primary);
     font-feature-settings: 'tnum' on, 'lnum' on;
 }
 
 .text-price-lg {
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
+    /* Alterado de mono para sans */
     font-size: 1.5rem;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--color-text-primary);
     font-feature-settings: 'tnum' on, 'lnum' on;
     letter-spacing: -0.02em;
+}
+
+/* ... (skip header/page styles) ... */
+
+.unit-number {
+    font-family: var(--font-sans);
+    /* Alterado de mono para sans */
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    z-index: 1;
+}
+
+/* ... (skip status styles) ... */
+
+.cell-area {
+    font-family: var(--font-sans);
+    /* Alterado de mono para sans */
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+}
+
+.cell-price {
+    font-family: var(--font-sans);
+    /* Alterado de mono para sans */
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--color-text-primary);
+}
+
+.cell-payment {
+    font-family: var(--font-sans);
+    /* Alterado de mono para sans */
+    font-size: 0.75rem;
+    color: var(--color-text-tertiary);
 }
 
 /* ============================================
@@ -272,6 +310,154 @@ body {
 
 .legend-dot-sold {
     background: var(--color-sold);
+}
+
+/* ============================================
+   AVAILABILITY GRID (Visual Map)
+   ============================================ */
+
+.availability-grid-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+    .availability-grid-section {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2rem;
+    }
+}
+
+.floor-grid {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    flex: 1;
+    min-width: 280px;
+    max-width: 400px;
+}
+
+@media (min-width: 1024px) {
+    .floor-grid {
+        flex: 0 1 auto;
+    }
+}
+
+.floor-title {
+    background: var(--color-surface-hover);
+    padding: 0.75rem 1rem;
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    text-align: center;
+    border-bottom: 1px solid var(--color-border);
+    letter-spacing: 0.02em;
+}
+
+.units-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--color-border-subtle);
+    padding: 1px;
+}
+
+.unit-cell {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+    background: var(--color-surface);
+    padding: 0.5rem;
+    min-height: 48px;
+    transition: all var(--duration-fast) var(--ease-out);
+}
+
+.unit-cell:not(.unit-cell--sold) {
+    cursor: pointer;
+}
+
+.unit-cell:not(.unit-cell--sold):hover {
+    background: var(--color-surface-hover);
+}
+
+.unit-number {
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    z-index: 1;
+}
+
+/* Status Icons */
+.status-icon {
+    position: absolute;
+    inset: 4px;
+    width: calc(100% - 8px);
+    height: calc(100% - 8px);
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.status-icon-x {
+    color: var(--color-sold);
+}
+
+.status-icon-circle {
+    color: var(--color-reserved);
+}
+
+/* Status Variants */
+.unit-cell--available {
+    background: rgba(16, 185, 129, 0.05);
+    /* Verde MUITO suave */
+    border: 1px solid rgba(16, 185, 129, 0.15);
+}
+
+.unit-cell--available .unit-number {
+    color: var(--color-text-primary);
+    font-weight: 500;
+}
+
+.unit-cell--available:hover {
+    background: rgba(16, 185, 129, 0.1);
+    border-color: var(--color-available);
+}
+
+.unit-cell--reserved {
+    background: rgba(245, 158, 11, 0.05);
+    /* Amarelo MUITO suave */
+    border: 1px solid rgba(245, 158, 11, 0.15);
+}
+
+.unit-cell--reserved .unit-number {
+    color: var(--color-text-primary);
+    font-weight: 500;
+    /* Regularizado para 500 */
+}
+
+.unit-cell--sold {
+    background: rgba(239, 68, 68, 0.05);
+    /* Vermelho MUITO suave */
+    border: 1px solid rgba(239, 68, 68, 0.15);
+    opacity: 1;
+}
+
+.unit-cell--sold .unit-number {
+    color: var(--color-text-primary);
+    font-weight: 500;
+    text-decoration: none;
+    opacity: 1;
 }
 
 /* ============================================
@@ -436,20 +622,20 @@ body {
 }
 
 .cell-area {
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
     font-size: 0.8125rem;
     color: var(--color-text-secondary);
 }
 
 .cell-price {
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
     font-weight: 600;
     font-size: 0.875rem;
     color: var(--color-text-primary);
 }
 
 .cell-payment {
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
     font-size: 0.75rem;
     color: var(--color-text-tertiary);
 }
@@ -630,7 +816,7 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 0.25rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
     font-size: 0.75rem;
     color: var(--color-text-tertiary);
     background: var(--color-surface-hover);
@@ -657,7 +843,7 @@ body {
 }
 
 .card-price {
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
     font-size: 1.125rem;
     font-weight: 600;
     color: var(--color-text-primary);

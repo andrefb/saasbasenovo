@@ -8,6 +8,7 @@
     <title>Gestão e Proposta | Sistema para Construtoras e Incorporadoras</title>
     <meta name="description" content="Gerencie empreendimentos, unidades e propostas de venda em um só lugar. Crie propostas em 2 minutos e acompanhe negociações em tempo real.">
     <meta name="keywords" content="gestão imobiliária, construtora, incorporadora, propostas de venda, empreendimentos">
+    <meta name="robots" content="noindex, nofollow">
     <link rel="canonical" href="{{ config('app.url') }}">
     
     {{-- Open Graph --}}

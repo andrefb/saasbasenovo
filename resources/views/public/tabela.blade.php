@@ -21,6 +21,41 @@
 
         </section>
 
+        {{-- Visual Availability Grid --}}
+        @if(isset($unitsByFloor) && count($unitsByFloor) > 0)
+        <section class="availability-grid-section">
+            @foreach($unitsByFloor as $floor => $floorUnits)
+                <div class="floor-grid">
+                    <h3 class="floor-title">{{ $floor }}</h3>
+                    <div class="units-grid">
+                        @foreach($floorUnits as $unit)
+                            <div 
+                                class="unit-cell unit-cell--{{ $unit['status'] }} {{ $unit['status'] !== 'sold' ? 'cursor-pointer' : '' }}"
+                                @if($unit['status'] !== 'sold')
+                                    @click="openDetails({{ json_encode($unit) }})"
+                                @endif
+                            >
+                                <span class="unit-number">{{ $unit['unit'] }}</span>
+                                @if($unit['status'] === 'sold')
+                                    {{-- X hand-drawn style --}}
+                                    <svg class="status-icon status-icon-x" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path d="M5 5 L19 19 M5 6 L18 19" stroke-width="2.5" stroke-linecap="round"/>
+                                        <path d="M19 5 L5 19 M18 6 L6 18" stroke-width="2.5" stroke-linecap="round"/>
+                                    </svg>
+                                @elseif($unit['status'] === 'reserved')
+                                    {{-- Circle hand-drawn style --}}
+                                    <svg class="status-icon status-icon-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <ellipse cx="12" cy="12" rx="8" ry="7.5" stroke-width="2.5" stroke-linecap="round"/>
+                                    </svg>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endforeach
+        </section>
+        @endif
+
         {{-- Legend --}}
         <nav class="legend-v4">
             <div class="legend-item">
@@ -206,6 +241,20 @@
                         <span class="modal-area">
                             <span x-text="selectedUnit?.area?.toLocaleString('pt-BR', {minimumFractionDigits: 2})"></span> m²
                         </span>
+                        
+                        {{-- Status Badge in Modal --}}
+                        <template x-if="selectedUnit?.status === 'reserved'">
+                            <span class="status-pill status-pill-reserved" style="margin-left: 0.5rem;">
+                                <span class="status-dot"></span>
+                                Reservado
+                            </span>
+                        </template>
+                        <template x-if="selectedUnit?.status === 'sold'">
+                            <span class="status-pill status-pill-sold" style="margin-left: 0.5rem;">
+                                <span class="status-dot"></span>
+                                Vendido
+                            </span>
+                        </template>
                     </div>
                     <button class="modal-close" @click="closeDetails()">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
