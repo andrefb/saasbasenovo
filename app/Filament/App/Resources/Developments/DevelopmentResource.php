@@ -10,6 +10,7 @@ use App\Filament\App\Resources\Developments\Schemas\DevelopmentForm;
 use App\Filament\App\Resources\Developments\Schemas\DevelopmentInfolist;
 use App\Filament\App\Resources\Developments\Tables\DevelopmentsTable;
 use App\Filament\App\Resources\Developments\RelationManagers\UnitsRelationManager;
+use App\Filament\App\Resources\Developments\RelationManagers\AdjustmentsRelationManager;
 use App\Models\Development;
 use BackedEnum;
 use UnitEnum;
@@ -53,6 +54,7 @@ class DevelopmentResource extends Resource
     {
         return [
             UnitsRelationManager::class,
+            AdjustmentsRelationManager::class,
         ];
     }
 

@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\Models\Development;
 use Illuminate\Http\Request;
 
 class TabelaPublicaController extends Controller
 {
     /**
-     * Display the public sales table for a company.
+     * Display the public sales table for a company (legacy - mock data).
      */
     public function show(string $slug)
     {
@@ -30,7 +31,7 @@ class TabelaPublicaController extends Controller
     }
 
     /**
-     * Display the public sales table (version 2 - Google Style) for a company.
+     * Display the public sales table (version 2 - Google Style) for a company (legacy - mock data).
      */
     public function show2(string $slug)
     {
@@ -48,6 +49,63 @@ class TabelaPublicaController extends Controller
         return view('public.tabela2', [
             'company' => $company,
             'units' => $units,
+        ]);
+    }
+
+    /**
+     * Display the public sales table for a specific development.
+     * Uses real data from database.
+     */
+    public function showDevelopmentTable(string $companySlug, string $developmentSlug)
+    {
+        // 1. Buscar empresa
+        $company = Company::where('slug', $companySlug)
+            ->where('is_active', true)
+            ->firstOrFail();
+
+        // 2. Buscar empreendimento da empresa
+        $development = Development::where('company_id', $company->id)
+            ->where('slug', $developmentSlug)
+            ->where('is_active', true)
+            ->firstOrFail();
+
+        // 3. Buscar unidades ativas (eager loading já configurado no model)
+        $units = $development->units()
+            ->where('is_active', true)
+            ->orderBy('floor')
+            ->orderBy('number')
+            ->get();
+
+        // 4. Mapear para estrutura esperada pelo template
+        $unitsData = $units->map(fn ($unit) => [
+            'id' => $unit->id,
+            'unit' => $unit->number,
+            'floor' => $unit->floor ?? '-',
+            'position' => $unit->position ?? '-',
+            'area' => (float) $unit->area,
+            'price' => (float) $unit->price,
+            'status' => $unit->status ?? 'available',
+            'entry' => $unit->down_payment_value,
+            'monthly' => [
+                'count' => $development->monthly_installments ?? 0,
+                'value' => $unit->monthly_installment_value,
+            ],
+            'annual' => [
+                'count' => $development->annual_installments ?? 0,
+                'value' => $unit->annual_installment_value,
+            ],
+            'keys' => $unit->keys_value,
+            'post_keys' => [
+                'count' => $development->post_keys_installments ?? 0,
+                'value' => $unit->post_keys_installment_value,
+            ],
+            'floor_plan' => $unit->floor_plan_url ?? 'https://placehold.co/400x300/e2e8f0/64748b?text=Sem+Planta',
+        ])->toArray();
+
+        return view('public.tabela2', [
+            'company' => $company,
+            'development' => $development,
+            'units' => $unitsData,
         ]);
     }
 

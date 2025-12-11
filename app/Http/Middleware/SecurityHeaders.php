@@ -35,12 +35,13 @@ class SecurityHeaders
         // Permite scripts inline (necessário para Filament/Livewire)
         $csp = implode('; ', [
             "default-src 'self'",
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:",
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://challenges.cloudflare.com",
             "style-src 'self' 'unsafe-inline' https://fonts.bunny.net https://fonts.googleapis.com",
             "font-src 'self' https://fonts.bunny.net https://fonts.gstatic.com data:",
             "img-src 'self' data: https: blob:",
             "connect-src 'self' ws: wss: blob:",  // WebSocket para Livewire + blob para upload
             "worker-src 'self' blob:",  // Web Workers para FileUpload
+            "frame-src 'self' https://challenges.cloudflare.com",  // Turnstile iframe
             "frame-ancestors 'self'",
         ]);
         $response->headers->set('Content-Security-Policy', $csp);

@@ -44,3 +44,7 @@ Route::middleware(['auth'])->group(function () {
 // Usamos /p/ (público) para evitar conflito com /app/ do Filament
 Route::get('/p/{slug}/tabela', [TabelaPublicaController::class, 'show'])->name('tabela.publica');
 Route::get('/p/{slug}/tabela2', [TabelaPublicaController::class, 'show2'])->name('tabela.publica2');
+
+// Nova rota: Tabela de disponibilidade por empreendimento
+Route::get('/p/{companySlug}/{developmentSlug}/tabela', [TabelaPublicaController::class, 'showDevelopmentTable'])
+    ->name('tabela.empreendimento');

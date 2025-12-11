@@ -66,4 +66,9 @@ class Development extends Model
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
+
+    public function adjustments(): HasMany
+    {
+        return $this->hasMany(DevelopmentAdjustment::class)->orderByDesc('applied_at');
+    }
 }

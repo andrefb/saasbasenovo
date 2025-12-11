@@ -20,6 +20,7 @@ class Unit extends Model
         'status',
         'area',
         'price',
+        'original_price',
         'floor_plan_url',
         'is_active',
         'updated_by',
@@ -29,6 +30,7 @@ class Unit extends Model
         'is_active' => 'boolean',
         'area' => 'decimal:2',
         'price' => 'decimal:2',
+        'original_price' => 'decimal:2',
     ];
 
     // Eager loading para evitar N+1

@@ -3,6 +3,8 @@
 namespace App\Providers\Filament;
 
 use App\Filament\App\Pages\EditProfile;
+use App\Filament\App\Pages\Auth\Login;
+use App\Filament\App\Pages\Auth\Register;
 use App\Models\Company;
 use App\Filament\App\Pages\Tenancy\RegisterCompany;
 use App\Filament\App\Pages\Tenancy\EditCompanyProfile;
@@ -35,9 +37,9 @@ class AppPanelProvider extends PanelProvider
         $panel = $panel
             ->id('app')
             ->path('app')  // Path-based: /app/{tenant}
-            ->login()
+            ->login(Login::class)
             ->passwordReset()
-            ->registration()
+            ->registration(Register::class)
             ->darkMode(false) // Desativa o Dark Mode
             ->profile(EditProfile::class)
             ->tenant(Company::class, slugAttribute: 'slug')

@@ -1,28 +1,20 @@
 <x-layouts.public2 :title="$company->name . ' - Tabela de Vendas'">
     <div x-data="tabelaApp()" class="min-h-screen bg-[var(--color-background)]">
         
-        {{-- Header - Google Style --}}
+        {{-- Header - Minimal com apenas logo da empresa --}}
         <header class="bg-[var(--color-card)] border-b border-[var(--color-border)] sticky top-0 z-40">
             <div class="max-w-7xl mx-auto px-4 py-3">
-                <div class="flex items-center justify-between">
-                    {{-- Logo e Nome --}}
-                    <div class="flex items-center gap-3">
-                        @if($company->logo_url)
-                            <img src="{{ $company->logo_url }}" alt="{{ $company->name }}" class="header-logo">
-                        @else
-                            <div class="w-10 h-10 rounded-full bg-[var(--color-primary-light)] flex items-center justify-center">
-                                <svg class="w-5 h-5 text-[var(--color-primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                                </svg>
-                            </div>
-                        @endif
-                        <span class="text-lg font-medium text-[var(--color-foreground)]">{{ $company->name }}</span>
-                    </div>
-                    
-                    {{-- Link Entrar - Google Style --}}
-                    <a href="{{ url('/app/' . $company->slug) }}" class="link-enter">
-                        Entrar
-                    </a>
+                <div class="flex items-center justify-center">
+                    {{-- Apenas Logo da Empresa --}}
+                    @if($company->logo_url)
+                        <img src="{{ $company->logo_url }}" alt="{{ $company->name }}" class="header-logo">
+                    @else
+                        <div class="w-10 h-10 rounded-full bg-[var(--color-primary-light)] flex items-center justify-center">
+                            <svg class="w-5 h-5 text-[var(--color-primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                            </svg>
+                        </div>
+                    @endif
                 </div>
             </div>
         </header>
@@ -30,6 +22,16 @@
         {{-- Main Content --}}
         <main class="max-w-7xl mx-auto px-4 py-6 sm:py-8">
             
+            {{-- Logo do Empreendimento e Título --}}
+            <div class="flex flex-col items-center justify-center mb-8">
+                @if(isset($development) && $development->logo_url)
+                    <img src="{{ $development->logo_url }}" alt="{{ $development->name }}" class="h-20 mb-4 object-contain">
+                @endif
+                <h1 class="text-2xl sm:text-3xl font-semibold text-[var(--color-foreground)] text-center">
+                    Tabela de Vendas e Disponibilidade
+                </h1>
+            </div>
+
             {{-- Status Legend - Chips --}}
             <div class="flex flex-wrap items-center justify-center sm:justify-start gap-3 mb-6">
                 <div class="chip">
@@ -57,8 +59,8 @@
                                 <th class="text-left px-4 py-3">Posição</th>
                                 <th class="text-right px-4 py-3">Área (m²)</th>
                                 <th class="text-right px-4 py-3">Preço</th>
-                                <th class="text-right px-4 py-3">Entrada (20%)</th>
-                                <th class="text-right px-4 py-3">Mensais (20%)</th>
+                                <th class="text-right px-4 py-3">Entrada ({{ isset($development) ? $development->down_payment_percent : 20 }}%)</th>
+                                <th class="text-right px-4 py-3">Mensais ({{ isset($development) ? $development->monthly_percent : 20 }}%)</th>
                                 <th class="text-center px-4 py-3">Planta</th>
                                 <th class="text-center px-4 py-3">Ações</th>
                             </tr>
@@ -235,31 +237,31 @@
                         <h3 class="text-xs font-medium text-[var(--color-muted-foreground)] mb-3 uppercase tracking-wide">Condições de Pagamento</h3>
                         <div class="space-y-2 bg-[var(--color-muted)] rounded-2xl p-4">
                             <div class="flex items-center justify-between py-2">
-                                <span class="text-sm text-[var(--color-muted-foreground)]">Entrada (20%)</span>
+                                <span class="text-sm text-[var(--color-muted-foreground)]">Entrada ({{ isset($development) ? $development->down_payment_percent : 20 }}%)</span>
                                 <span class="text-sm font-medium text-[var(--color-foreground)]">
                                     R$ <span x-text="selectedUnit?.entry?.toLocaleString('pt-BR', {minimumFractionDigits: 2})"></span>
                                 </span>
                             </div>
                             <div class="flex items-center justify-between py-2 border-t border-[var(--color-border)]">
-                                <span class="text-sm text-[var(--color-muted-foreground)]">Mensais (20%)</span>
+                                <span class="text-sm text-[var(--color-muted-foreground)]">Mensais ({{ isset($development) ? $development->monthly_percent : 20 }}%)</span>
                                 <span class="text-sm font-medium text-[var(--color-foreground)]">
                                     <span x-text="selectedUnit?.monthly?.count"></span>x R$ <span x-text="selectedUnit?.monthly?.value?.toLocaleString('pt-BR', {minimumFractionDigits: 2})"></span>
                                 </span>
                             </div>
                             <div class="flex items-center justify-between py-2 border-t border-[var(--color-border)]">
-                                <span class="text-sm text-[var(--color-muted-foreground)]">Anual (20%)</span>
+                                <span class="text-sm text-[var(--color-muted-foreground)]">Anual ({{ isset($development) ? $development->annual_percent : 20 }}%)</span>
                                 <span class="text-sm font-medium text-[var(--color-foreground)]">
                                     <span x-text="selectedUnit?.annual?.count"></span>x R$ <span x-text="selectedUnit?.annual?.value?.toLocaleString('pt-BR', {minimumFractionDigits: 2})"></span>
                                 </span>
                             </div>
                             <div class="flex items-center justify-between py-2 border-t border-[var(--color-border)]">
-                                <span class="text-sm text-[var(--color-muted-foreground)]">Chaves (10%)</span>
+                                <span class="text-sm text-[var(--color-muted-foreground)]">Chaves ({{ isset($development) ? $development->keys_percent : 10 }}%)</span>
                                 <span class="text-sm font-medium text-[var(--color-foreground)]">
                                     R$ <span x-text="selectedUnit?.keys?.toLocaleString('pt-BR', {minimumFractionDigits: 2})"></span>
                                 </span>
                             </div>
                             <div class="flex items-center justify-between py-2 border-t border-[var(--color-border)]">
-                                <span class="text-sm text-[var(--color-muted-foreground)]">Pós-chaves (30%)</span>
+                                <span class="text-sm text-[var(--color-muted-foreground)]">Pós-chaves ({{ isset($development) ? $development->post_keys_percent : 30 }}%)</span>
                                 <span class="text-sm font-medium text-[var(--color-foreground)]">
                                     <span x-text="selectedUnit?.post_keys?.count"></span>x R$ <span x-text="selectedUnit?.post_keys?.value?.toLocaleString('pt-BR', {minimumFractionDigits: 2})"></span>
                                 </span>
