@@ -193,8 +193,8 @@
                 
                 {{-- CTA Buttons --}}
                 <div class="hidden md:flex items-center gap-4">
-                    <a href="/app/login" class="text-white/80 hover:text-white transition-colors font-medium">Entrar</a>
-                    <a href="/app/register" class="gradient-coral text-white px-5 py-2.5 rounded-xl font-semibold hover:opacity-90 transition-opacity">
+                    <a href="/login" class="text-white/80 hover:text-white transition-colors font-medium">Entrar</a>
+                    <a href="/register" class="gradient-coral text-white px-5 py-2.5 rounded-xl font-semibold hover:opacity-90 transition-opacity">
                         Começar grátis
                     </a>
                 </div>
@@ -222,8 +222,8 @@
                     <a href="#precos" onclick="toggleMobileMenu()" class="text-lg font-medium text-white/80 hover:text-white">Preços</a>
                     <a href="#faq" onclick="toggleMobileMenu()" class="text-lg font-medium text-white/80 hover:text-white">FAQ</a>
                     <hr class="border-white/10">
-                    <a href="/app/login" class="text-lg font-medium text-white/80 hover:text-white">Entrar</a>
-                    <a href="/app/register" class="gradient-coral text-white text-center py-3 rounded-xl font-semibold">Começar grátis</a>
+                    <a href="/login" class="text-lg font-medium text-white/80 hover:text-white">Entrar</a>
+                    <a href="/register" class="gradient-coral text-white text-center py-3 rounded-xl font-semibold">Começar grátis</a>
                 </nav>
             </div>
         </div>
@@ -258,7 +258,7 @@
                         
                         {{-- CTA Buttons --}}
                         <div class="fade-up delay-300 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                            <a href="/app/register" class="inline-flex items-center justify-center gap-2 gradient-coral text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:opacity-90 transition-opacity shadow-lg shadow-coral/25">
+                            <a href="/register" class="inline-flex items-center justify-center gap-2 gradient-coral text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:opacity-90 transition-opacity shadow-lg shadow-coral/25">
                                 Criar conta grátis
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
@@ -533,7 +533,7 @@
                                 Propostas ilimitadas
                             </li>
                         </ul>
-                        <a href="/app/register" class="block text-center py-3 px-6 rounded-xl border border-white/20 text-white font-semibold hover:bg-white/5 transition-colors">
+                        <a href="/register" class="block text-center py-3 px-6 rounded-xl border border-white/20 text-white font-semibold hover:bg-white/5 transition-colors">
                             Começar grátis
                         </a>
                     </div>
@@ -579,7 +579,7 @@
                                 Relatórios avançados
                             </li>
                         </ul>
-                        <a href="/app/register" class="block text-center py-3 px-6 rounded-xl gradient-coral text-white font-semibold hover:opacity-90 transition-opacity">
+                        <a href="/register" class="block text-center py-3 px-6 rounded-xl gradient-coral text-white font-semibold hover:opacity-90 transition-opacity">
                             Começar grátis
                         </a>
                     </div>
@@ -624,7 +624,7 @@
                                 Suporte prioritário
                             </li>
                         </ul>
-                        <a href="/app/register" class="block text-center py-3 px-6 rounded-xl border border-white/20 text-white font-semibold hover:bg-white/5 transition-colors">
+                        <a href="/register" class="block text-center py-3 px-6 rounded-xl border border-white/20 text-white font-semibold hover:bg-white/5 transition-colors">
                             Começar grátis
                         </a>
                     </div>
@@ -727,7 +727,7 @@
                     Junte-se a construtoras que já simplificaram sua gestão de vendas. Comece grátis hoje.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="/app/register" class="inline-flex items-center justify-center gap-2 gradient-coral text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:opacity-90 transition-opacity shadow-lg shadow-coral/25">
+                    <a href="/register" class="inline-flex items-center justify-center gap-2 gradient-coral text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:opacity-90 transition-opacity shadow-lg shadow-coral/25">
                         Criar conta grátis
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>

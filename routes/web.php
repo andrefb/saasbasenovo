@@ -31,8 +31,30 @@ Route::get('/', function () {
 
     // Se logado e tem empresa, redireciona para o painel da primeira empresa
     $company = Auth::user()->companies()->first();
+    $appDomain = config('filament.app_domain');
+    
+    if ($appDomain) {
+        return redirect("https://{$appDomain}/{$company->slug}");
+    }
     return redirect("/app/{$company->slug}");
 });
+
+// Rotas de login/register no domínio principal (redirecionam para app subdomain em produção)
+Route::get('/login', function () {
+    $appDomain = config('filament.app_domain');
+    if ($appDomain) {
+        return redirect("https://{$appDomain}/login");
+    }
+    return redirect('/app/login');
+})->name('login.redirect');
+
+Route::get('/register', function () {
+    $appDomain = config('filament.app_domain');
+    if ($appDomain) {
+        return redirect("https://{$appDomain}/register");
+    }
+    return redirect('/app/register');
+})->name('register.redirect');
 
 // Grupo protegido por autenticação
 Route::middleware(['auth'])->group(function () {
