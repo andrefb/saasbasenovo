@@ -80,6 +80,31 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Show Landing Page
+    |--------------------------------------------------------------------------
+    |
+    | Controla se a landing page pública é exibida. Quando false, visitantes
+    | não autenticados verão uma página "Em Breve" com botão de login.
+    | Use false enquanto o SaaS ainda não está no ar publicamente.
+    |
+    */
+
+    'show_landing' => env('APP_SHOW_LANDING', true),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Show Sold Units in Public Tables
+    |--------------------------------------------------------------------------
+    |
+    | Controla se unidades vendidas aparecem nas tabelas públicas de vendas.
+    | false = esconde unidades vendidas | true = mostra todas as unidades
+    |
+    */
+
+    'show_sold_units' => env('APP_SHOW_SOLD_UNITS', true),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |

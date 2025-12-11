@@ -19,8 +19,13 @@ use App\Http\Controllers\TabelaPublicaController;
 
 // Rota raiz - Landing page ou redirecionamento
 Route::get('/', function () {
-    // Se não logado, mostra landing page pública
+    // Se não logado
     if (!Auth::check()) {
+        // Se landing desabilitada, mostra página "Em Breve"
+        if (!config('app.show_landing', true)) {
+            return view('coming-soon');
+        }
+        // Caso contrário, mostra landing page pública
         return view('landing');
     }
 
@@ -70,3 +75,8 @@ Route::get('/p/{slug}/tabela2', [TabelaPublicaController::class, 'show2'])->name
 // Nova rota: Tabela de disponibilidade por empreendimento
 Route::get('/p/{companySlug}/{developmentSlug}/tabela', [TabelaPublicaController::class, 'showDevelopmentTable'])
     ->name('tabela.empreendimento');
+
+// Nova rota: Tabela 2 por empreendimento
+Route::get('/p/{companySlug}/{developmentSlug}/tabela2', [TabelaPublicaController::class, 'showDevelopmentTable2'])
+    ->name('tabela.empreendimento2');
+

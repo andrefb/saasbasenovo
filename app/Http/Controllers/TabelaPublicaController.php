@@ -70,10 +70,77 @@ class TabelaPublicaController extends Controller
             ->firstOrFail();
 
         // 3. Buscar unidades ativas (eager loading já configurado no model)
-        $units = $development->units()
+        $query = $development->units()
+            ->where('is_active', true);
+
+        // Filtrar vendidos se configurado
+        if (!config('app.show_sold_units', true)) {
+            $query->where('status', '!=', 'sold');
+        }
+
+        $units = $query->orderBy('number')
+            ->get();
+
+        // 4. Mapear para estrutura esperada pelo template
+        $unitsData = $units->map(fn ($unit) => [
+            'id' => $unit->id,
+            'unit' => $unit->number,
+            'floor' => $unit->floor ?? '-',
+            'position' => $unit->position ?? '-',
+            'area' => (float) $unit->area,
+            'price' => (float) $unit->price,
+            'status' => $unit->status ?? 'available',
+            'entry' => $unit->down_payment_value,
+            'monthly' => [
+                'count' => $development->monthly_installments ?? 0,
+                'value' => $unit->monthly_installment_value,
+            ],
+            'annual' => [
+                'count' => $development->annual_installments ?? 0,
+                'value' => $unit->annual_installment_value,
+            ],
+            'keys' => $unit->keys_value,
+            'post_keys' => [
+                'count' => $development->post_keys_installments ?? 0,
+                'value' => $unit->post_keys_installment_value,
+            ],
+            'floor_plan' => $unit->floor_plan_url ?? 'https://placehold.co/400x300/e2e8f0/64748b?text=Sem+Planta',
+        ])->toArray();
+
+        return view('public.tabela', [
+            'company' => $company,
+            'development' => $development,
+            'units' => $unitsData,
+        ]);
+    }
+
+    /**
+     * Display the public sales table (version 2) for a specific development.
+     * Uses real data from database.
+     */
+    public function showDevelopmentTable2(string $companySlug, string $developmentSlug)
+    {
+        // 1. Buscar empresa
+        $company = Company::where('slug', $companySlug)
             ->where('is_active', true)
-            ->orderBy('floor')
-            ->orderBy('number')
+            ->firstOrFail();
+
+        // 2. Buscar empreendimento da empresa
+        $development = Development::where('company_id', $company->id)
+            ->where('slug', $developmentSlug)
+            ->where('is_active', true)
+            ->firstOrFail();
+
+        // 3. Buscar unidades ativas
+        $query = $development->units()
+            ->where('is_active', true);
+
+        // Filtrar vendidos se configurado
+        if (!config('app.show_sold_units', true)) {
+            $query->where('status', '!=', 'sold');
+        }
+
+        $units = $query->orderBy('number')
             ->get();
 
         // 4. Mapear para estrutura esperada pelo template
