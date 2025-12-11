@@ -23,13 +23,16 @@ class MeuadminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        return $panel
+        // Domínio opcional para produção (ex: admin04.gestaoeproposta.com)
+        // Em local fica vazio = usa localhost:8000/admin04
+        $adminDomain = config('filament.admin_domain');
+
+        $panel = $panel
             ->default()
             ->id('admin')
-            ->path('meuadmin')  // Path em vez de subdomain - evita conflito com multi-tenancy
+            ->path($adminDomain ? '' : 'admin04')  // Subdomínio = raiz, Local = /admin04
             ->login()
             // SEM registration() e SEM passwordReset() - apenas login direto
-
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -57,5 +60,11 @@ class MeuadminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ]);
+
+        if ($adminDomain) {
+            $panel->domain($adminDomain);
+        }
+
+        return $panel;
     }
 }

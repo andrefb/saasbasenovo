@@ -36,7 +36,7 @@ class AppPanelProvider extends PanelProvider
 
         $panel = $panel
             ->id('app')
-            ->path('app')  // Path-based: /app/{tenant}
+            ->path($appDomain ? '' : 'app')  // Subdomínio = raiz, Local = /app
             ->login(Login::class)
             ->passwordReset()
             ->registration(Register::class)
