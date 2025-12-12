@@ -22,7 +22,7 @@
             @if(isset($development) && $development->logo_url)
                 <img src="{{ $development->logo_url }}" alt="{{ $development->name }}" class="dev-logo">
             @endif
-            <h1 class="text-display">Tabela de Vendas</h1>
+            
 
             @if(isset($development) && $development->description)
                 <div class="dev-description">
@@ -44,6 +44,8 @@
                     Visitar site do empreendimento
                 </a>
             @endif
+
+            <h1 class="text-display">Tabela de Vendas</h1>
 
         </section>
 
