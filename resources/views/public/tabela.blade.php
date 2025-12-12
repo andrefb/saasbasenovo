@@ -308,8 +308,8 @@
                         <div class="payment-item">
                             <span class="payment-label">Mensais ({{ isset($development) ? rtrim(rtrim(number_format($development->monthly_percent, 2), '0'), '.') : '20' }}%)</span>
                             <div class="text-right">
-                                <span class="payment-value">R$ <span x-text="selectedUnit?.monthly?.value?.toLocaleString('pt-BR', {minimumFractionDigits: 2})"></span></span>
-                                <p class="payment-installments"><span x-text="selectedUnit?.monthly?.count"></span> parcelas</p>
+                                <span class="payment-value"><span x-text="selectedUnit?.monthly?.count"></span>x R$ <span x-text="selectedUnit?.monthly?.value?.toLocaleString('pt-BR', {minimumFractionDigits: 2})"></span></span>
+                                <p class="payment-installments">Total:&nbsp; R$ <span x-text="selectedUnit?.monthly?.total?.toLocaleString('pt-BR', {minimumFractionDigits: 2})"></span></p>
                             </div>
                         </div>
 
@@ -317,8 +317,8 @@
                         <div class="payment-item">
                             <span class="payment-label">Anuais ({{ isset($development) ? rtrim(rtrim(number_format($development->annual_percent, 2), '0'), '.') : '20' }}%)</span>
                             <div class="text-right">
-                                <span class="payment-value">R$ <span x-text="selectedUnit?.annual?.value?.toLocaleString('pt-BR', {minimumFractionDigits: 2})"></span></span>
-                                <p class="payment-installments"><span x-text="selectedUnit?.annual?.count"></span> parcelas</p>
+                                <span class="payment-value"><span x-text="selectedUnit?.annual?.count"></span>x R$ <span x-text="selectedUnit?.annual?.value?.toLocaleString('pt-BR', {minimumFractionDigits: 2})"></span></span>
+                                <p class="payment-installments">Total:&nbsp; R$ <span x-text="selectedUnit?.annual?.total?.toLocaleString('pt-BR', {minimumFractionDigits: 2})"></span></p>
                             </div>
                         </div>
 
@@ -334,8 +334,8 @@
                         <div class="payment-item">
                             <span class="payment-label">Pós-Chaves ({{ isset($development) ? rtrim(rtrim(number_format($development->post_keys_percent, 2), '0'), '.') : '30' }}%)</span>
                             <div class="text-right">
-                                <span class="payment-value">R$ <span x-text="selectedUnit?.post_keys?.value?.toLocaleString('pt-BR', {minimumFractionDigits: 2})"></span></span>
-                                <p class="payment-installments"><span x-text="selectedUnit?.post_keys?.count"></span> parcelas</p>
+                                <span class="payment-value"><span x-text="selectedUnit?.post_keys?.count"></span>x R$ <span x-text="selectedUnit?.post_keys?.value?.toLocaleString('pt-BR', {minimumFractionDigits: 2})"></span></span>
+                                <p class="payment-installments">Total:&nbsp; R$ <span x-text="selectedUnit?.post_keys?.total?.toLocaleString('pt-BR', {minimumFractionDigits: 2})"></span></p>
                             </div>
                         </div>
                     </div>

@@ -92,15 +92,18 @@ class TabelaPublicaController extends Controller
             'monthly' => [
                 'count' => $development->monthly_installments ?? 0,
                 'value' => $unit->monthly_installment_value,
+                'total' => $unit->monthly_value,
             ],
             'annual' => [
                 'count' => $development->annual_installments ?? 0,
                 'value' => $unit->annual_installment_value,
+                'total' => $unit->annual_value,
             ],
             'keys' => $unit->keys_value,
             'post_keys' => [
                 'count' => $development->post_keys_installments ?? 0,
                 'value' => $unit->post_keys_installment_value,
+                'total' => $unit->post_keys_value,
             ],
             'floor_plan' => $unit->floor_plan_url ?? 'https://placehold.co/400x300/e2e8f0/64748b?text=Sem+Planta',
         ])->toArray();
@@ -163,15 +166,18 @@ class TabelaPublicaController extends Controller
             'monthly' => [
                 'count' => $development->monthly_installments ?? 0,
                 'value' => $unit->monthly_installment_value,
+                'total' => $unit->monthly_value,
             ],
             'annual' => [
                 'count' => $development->annual_installments ?? 0,
                 'value' => $unit->annual_installment_value,
+                'total' => $unit->annual_value,
             ],
             'keys' => $unit->keys_value,
             'post_keys' => [
                 'count' => $development->post_keys_installments ?? 0,
                 'value' => $unit->post_keys_installment_value,
+                'total' => $unit->post_keys_value,
             ],
             'floor_plan' => $unit->floor_plan_url ?? 'https://placehold.co/400x300/e2e8f0/64748b?text=Sem+Planta',
         ])->toArray();
