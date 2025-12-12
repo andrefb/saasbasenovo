@@ -12,23 +12,17 @@ class CloudinaryService
 
     public function __construct()
     {
-        // Usa config() para funcionar corretamente em produção com cache
-        $cloudinaryUrl = config('cloudinary.cloud_url');
-        
-        if ($cloudinaryUrl) {
-            Configuration::instance($cloudinaryUrl);
-        } else {
-            Configuration::instance([
-                'cloud' => [
-                    'cloud_name' => config('cloudinary.cloud_name'),
-                    'api_key' => config('cloudinary.api_key'),
-                    'api_secret' => config('cloudinary.api_secret'),
-                ],
-                'url' => [
-                    'secure' => true,
-                ],
-            ]);
-        }
+        // Usa sempre array de configuração (URL pode falhar em produção)
+        Configuration::instance([
+            'cloud' => [
+                'cloud_name' => config('cloudinary.cloud_name'),
+                'api_key' => config('cloudinary.api_key'),
+                'api_secret' => config('cloudinary.api_secret'),
+            ],
+            'url' => [
+                'secure' => true,
+            ],
+        ]);
 
         $this->cloudinary = new Cloudinary();
     }
