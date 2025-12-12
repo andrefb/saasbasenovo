@@ -12,17 +12,17 @@ class CloudinaryService
 
     public function __construct()
     {
-        // Configura usando CLOUDINARY_URL ou variáveis separadas
-        $cloudinaryUrl = env('CLOUDINARY_URL');
+        // Usa config() para funcionar corretamente em produção com cache
+        $cloudinaryUrl = config('cloudinary.cloud_url');
         
         if ($cloudinaryUrl) {
             Configuration::instance($cloudinaryUrl);
         } else {
             Configuration::instance([
                 'cloud' => [
-                    'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
-                    'api_key' => env('CLOUDINARY_API_KEY'),
-                    'api_secret' => env('CLOUDINARY_API_SECRET'),
+                    'cloud_name' => config('cloudinary.cloud_name'),
+                    'api_key' => config('cloudinary.api_key'),
+                    'api_secret' => config('cloudinary.api_secret'),
                 ],
                 'url' => [
                     'secure' => true,
@@ -46,7 +46,7 @@ class CloudinaryService
         $path = $file instanceof UploadedFile ? $file->getRealPath() : $file;
         
         $defaultOptions = [
-            'folder' => env('CLOUDINARY_FOLDER', 'saas') . '/' . $folder,
+            'folder' => config('cloudinary.folder') . '/' . $folder,
             'transformation' => [
                 'width' => 500,
                 'height' => 500,
