@@ -280,7 +280,15 @@ class EditCompanyProfile extends EditTenantProfile
 
     protected function getRedirectUrl(): ?string
     {
-        // Sempre redireciona para o dashboard do tenant (com novo slug se foi alterado)
+        // Verifica se está usando subdomínio (produção) ou path (local)
+        $appDomain = config('filament.app_domain');
+        
+        if ($appDomain) {
+            // Produção: subdomínio, URL é apenas /{slug}
+            return url('/' . $this->tenant->slug);
+        }
+        
+        // Local: path-based, URL é /app/{slug}
         return url('/app/' . $this->tenant->slug);
     }
 
