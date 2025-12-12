@@ -45,7 +45,7 @@
                 </a>
             @endif
 
-            <h1 class="text-display">Tabela de Vendas</h1>
+            <br /><h1 class="text-display">Tabela de Vendas</h1>
 
         </section>
 
