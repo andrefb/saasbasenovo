@@ -17,7 +17,7 @@
             @if(isset($development) && $development->logo_url)
                 <img src="{{ $development->logo_url }}" alt="{{ $development->name }}" class="dev-logo">
             @endif
-            <h1 class="text-display">Tabela de Disponibilidade e Venda</h1>
+            <h1 class="text-display">Tabela de Vendas</h1>
 
         </section>
 
@@ -81,26 +81,26 @@
                     <thead>
                         <tr>
                             <th>Unidade</th>
-                            <th class="text-right">Área</th>
+                            <th class="text-right">Área (m²)</th>
                             <th class="text-right">Valor</th>
-                            <th class="text-right">Entrada</th>
-                            <th class="text-right">Mensais</th>
+                            <th class="text-right">Entrada ({{ isset($development) ? rtrim(rtrim(number_format($development->down_payment_percent, 2), '0'), '.') : '30' }}%)</th>
+                            <th class="text-right">Mensais ({{ isset($development) ? rtrim(rtrim(number_format($development->monthly_percent, 2), '0'), '.') : '20' }}%)</th>
+                            <th class="text-right">Anuais ({{ isset($development) ? rtrim(rtrim(number_format($development->annual_percent, 2), '0'), '.') : '20' }}%)</th>
+                            <th class="text-right">Chaves ({{ isset($development) ? rtrim(rtrim(number_format($development->keys_percent, 2), '0'), '.') : '10' }}%)</th>
+                            <th class="text-right">Pós-Chaves ({{ isset($development) ? rtrim(rtrim(number_format($development->post_keys_percent, 2), '0'), '.') : '30' }}%)</th>
                             <th class="text-center">Status</th>
                             <th class="text-center"></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($units as $unit)
-                            <tr class="{{ $unit['status'] === 'sold' ? 'is-sold' : ($unit['status'] === 'reserved' ? 'is-reserved' : '') }}">
+                            <tr 
+                                class="{{ $unit['status'] === 'sold' ? 'is-sold' : ($unit['status'] === 'reserved' ? 'is-reserved' : '') }} cursor-pointer"
+                                @click="openDetails({{ json_encode($unit) }})"
+                            >
                                 {{-- Unit --}}
                                 <td>
                                     <div class="cell-unit">
-                                        <img
-                                            src="{{ $unit['floor_plan'] }}"
-                                            alt="Planta {{ $unit['unit'] }}"
-                                            class="cell-thumbnail"
-                                            @click="openFloorPlan('{{ $unit['floor_plan'] }}', '{{ $unit['unit'] }}')"
-                                        >
                                         <div class="cell-unit-info">
                                             <span class="cell-unit-number">{{ $unit['unit'] }}</span>
                                             <span class="cell-unit-location">{{ $unit['floor'] }} · {{ $unit['position'] }}</span>
@@ -110,7 +110,7 @@
 
                                 {{-- Area --}}
                                 <td class="text-right">
-                                    <span class="cell-area">{{ number_format($unit['area'], 2, ',', '.') }} m²</span>
+                                    <span class="cell-area">{{ number_format($unit['area'], 2, ',', '.') }}</span>
                                 </td>
 
                                 {{-- Price --}}
@@ -128,6 +128,21 @@
                                     <span class="cell-payment">{{ $unit['monthly']['count'] }}x R$ {{ number_format($unit['monthly']['value'], 2, ',', '.') }}</span>
                                 </td>
 
+                                {{-- Annual --}}
+                                <td class="text-right">
+                                    <span class="cell-payment">{{ $unit['annual']['count'] }}x R$ {{ number_format($unit['annual']['value'], 2, ',', '.') }}</span>
+                                </td>
+
+                                {{-- Keys --}}
+                                <td class="text-right">
+                                    <span class="cell-payment">R$ {{ number_format($unit['keys'], 2, ',', '.') }}</span>
+                                </td>
+
+                                {{-- Post Keys --}}
+                                <td class="text-right">
+                                    <span class="cell-payment">{{ $unit['post_keys']['count'] }}x R$ {{ number_format($unit['post_keys']['value'], 2, ',', '.') }}</span>
+                                </td>
+
                                 {{-- Status --}}
                                 <td class="text-center">
                                     <span class="status-pill status-pill-{{ $unit['status'] }}">
@@ -140,7 +155,7 @@
                                 <td class="text-center">
                                     <button
                                         class="btn-icon"
-                                        @click="openDetails({{ json_encode($unit) }})"
+                                        @click.stop="openDetails({{ json_encode($unit) }})"
                                         title="Ver detalhes"
                                     >
                                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -283,7 +298,7 @@
                     <div class="payment-list">
                         {{-- Entrada --}}
                         <div class="payment-item">
-                            <span class="payment-label">Entrada ({{ isset($development) ? $development->down_payment_percent : 20 }}%)</span>
+                            <span class="payment-label">Entrada ({{ isset($development) ? rtrim(rtrim(number_format($development->down_payment_percent, 2), '0'), '.') : '30' }}%)</span>
                             <div class="text-right">
                                 <span class="payment-value">R$ <span x-text="selectedUnit?.entry?.toLocaleString('pt-BR', {minimumFractionDigits: 2})"></span></span>
                             </div>
@@ -291,7 +306,7 @@
 
                         {{-- Mensais --}}
                         <div class="payment-item">
-                            <span class="payment-label">Mensais ({{ isset($development) ? $development->monthly_percent : 20 }}%)</span>
+                            <span class="payment-label">Mensais ({{ isset($development) ? rtrim(rtrim(number_format($development->monthly_percent, 2), '0'), '.') : '20' }}%)</span>
                             <div class="text-right">
                                 <span class="payment-value">R$ <span x-text="selectedUnit?.monthly?.value?.toLocaleString('pt-BR', {minimumFractionDigits: 2})"></span></span>
                                 <p class="payment-installments"><span x-text="selectedUnit?.monthly?.count"></span> parcelas</p>
@@ -300,7 +315,7 @@
 
                         {{-- Anuais --}}
                         <div class="payment-item">
-                            <span class="payment-label">Anuais ({{ isset($development) ? $development->annual_percent : 20 }}%)</span>
+                            <span class="payment-label">Anuais ({{ isset($development) ? rtrim(rtrim(number_format($development->annual_percent, 2), '0'), '.') : '20' }}%)</span>
                             <div class="text-right">
                                 <span class="payment-value">R$ <span x-text="selectedUnit?.annual?.value?.toLocaleString('pt-BR', {minimumFractionDigits: 2})"></span></span>
                                 <p class="payment-installments"><span x-text="selectedUnit?.annual?.count"></span> parcelas</p>
@@ -309,7 +324,7 @@
 
                         {{-- Chaves --}}
                         <div class="payment-item">
-                            <span class="payment-label">Chaves ({{ isset($development) ? $development->keys_percent : 10 }}%)</span>
+                            <span class="payment-label">Chaves ({{ isset($development) ? rtrim(rtrim(number_format($development->keys_percent, 2), '0'), '.') : '10' }}%)</span>
                             <div class="text-right">
                                 <span class="payment-value">R$ <span x-text="selectedUnit?.keys?.toLocaleString('pt-BR', {minimumFractionDigits: 2})"></span></span>
                             </div>
@@ -317,7 +332,7 @@
 
                         {{-- Pós-Chaves --}}
                         <div class="payment-item">
-                            <span class="payment-label">Pós-Chaves ({{ isset($development) ? $development->post_keys_percent : 30 }}%)</span>
+                            <span class="payment-label">Pós-Chaves ({{ isset($development) ? rtrim(rtrim(number_format($development->post_keys_percent, 2), '0'), '.') : '30' }}%)</span>
                             <div class="text-right">
                                 <span class="payment-value">R$ <span x-text="selectedUnit?.post_keys?.value?.toLocaleString('pt-BR', {minimumFractionDigits: 2})"></span></span>
                                 <p class="payment-installments"><span x-text="selectedUnit?.post_keys?.count"></span> parcelas</p>

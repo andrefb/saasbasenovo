@@ -128,19 +128,7 @@
                 O sistema completo para construtoras e incorporadoras gerenciarem empreendimentos, unidades e propostas de venda.
             </p>
             
-            {{-- CTA Button --}}
-            <div class="fade-up delay-400 space-y-4">
-                <a href="/login" class="inline-flex items-center justify-center gap-2 gradient-coral text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:opacity-90 transition-opacity shadow-lg shadow-coral/25">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
-                    </svg>
-                    Acessar minha conta
-                </a>
-                
-                <p class="text-white/30 text-sm">
-                    Já é cliente? Faça login para acessar o sistema.
-                </p>
-            </div>
+            {{-- CTA removido temporariamente --}}
             
             {{-- Decorative features preview --}}
             <div class="fade-up delay-400 mt-16 grid grid-cols-3 gap-4 max-w-md mx-auto">
