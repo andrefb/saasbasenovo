@@ -24,6 +24,27 @@
             @endif
             <h1 class="text-display">Tabela de Vendas</h1>
 
+            @if(isset($development) && $development->description)
+                <div class="dev-description">
+                    {!! $development->description !!}
+                </div>
+            @endif
+
+            @if(isset($development) && $development->website)
+                @php
+                    $websiteUrl = $development->website;
+                    if (!preg_match('~^https?://~i', $websiteUrl)) {
+                        $websiteUrl = 'https://' . $websiteUrl;
+                    }
+                @endphp
+                <a href="{{ $websiteUrl }}" target="_blank" rel="noopener noreferrer" class="dev-website-link">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                    </svg>
+                    Visitar site do empreendimento
+                </a>
+            @endif
+
         </section>
 
         {{-- Visual Availability Grid --}}
@@ -305,6 +326,11 @@
                         <p class="price-value">R$ <span x-text="selectedUnit?.price?.toLocaleString('pt-BR', {minimumFractionDigits: 2})"></span></p>
                     </div>
 
+                    {{-- Unit Description --}}
+                    <template x-if="selectedUnit?.description">
+                        <div class="unit-description" x-html="selectedUnit?.description"></div>
+                    </template>
+
                     {{-- Payment Conditions --}}
                     <h3 class="section-title">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -397,7 +423,7 @@
                     </svg>
                 </button>
                 <img :src="floorPlanImage" :alt="'Planta ' + floorPlanUnit">
-                <p class="lightbox-title">Unidade <span x-text="floorPlanUnit"></span></p>
+                <p class="lightbox-title"><span x-text="floorPlanUnit"></span></p>
             </div>
         </div>
 

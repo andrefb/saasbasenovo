@@ -22,6 +22,7 @@ class Unit extends Model
         'price',
         'original_price',
         'floor_plan_url',
+        'description',
         'is_active',
         'updated_by',
     ];

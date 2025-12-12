@@ -20,6 +20,8 @@ class Development extends Model
         'legal_name',
         'cnpj',
         'logo_url',
+        'description',
+        'website',
         'zip_code',
         'street',
         'number',

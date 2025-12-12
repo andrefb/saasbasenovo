@@ -47,6 +47,12 @@ class UnitForm
                             ->label('URL da Planta')
                             ->url()
                             ->columnSpanFull(),
+                        \Filament\Forms\Components\Textarea::make('description')
+                            ->label('Descrição')
+                            ->rows(6)
+                            ->maxLength(65535)
+                            ->helperText('Descrição detalhada da unidade')
+                            ->columnSpanFull(),
                     ]),
 
                 Section::make('Configurações')

@@ -55,6 +55,17 @@ class DevelopmentForm
                             ->visibility('private')
                             ->helperText('Formatos: JPG, PNG, WebP, SVG. Máximo: 2MB. Clique em Salvar para enviar.')
                             ->columnSpanFull(),
+                        \Filament\Forms\Components\Textarea::make('description')
+                            ->label('Descrição')
+                            ->rows(6)
+                            ->maxLength(65535)
+                            ->helperText('Descrição detalhada do empreendimento')
+                            ->columnSpanFull(),
+                        TextInput::make('website')
+                            ->label('Website do Empreendimento')
+                            ->maxLength(255)
+                            ->helperText('Ex: www.meusite.com.br ou https://meusite.com.br')
+                            ->columnSpanFull(),
                     ]),
 
                 Section::make('Endereço')
