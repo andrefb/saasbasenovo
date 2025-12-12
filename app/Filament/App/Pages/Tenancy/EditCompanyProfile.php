@@ -298,35 +298,16 @@ class EditCompanyProfile extends EditTenantProfile
      */
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        \Illuminate\Support\Facades\Log::info('mutateFormDataBeforeSave INICIADO', ['data_keys' => array_keys($data)]);
-
         // Se houver arquivo de upload (array com caminho temporário)
         if (!empty($data['logo_upload'])) {
-            \Illuminate\Support\Facades\Log::info('Logo upload detectado', ['value' => $data['logo_upload']]);
-            
             $filename = is_array($data['logo_upload']) ? reset($data['logo_upload']) : $data['logo_upload'];
-            
-            // O caminho já vem com a pasta 'temp-uploads/' definida no componente, então removemos a duplicação aqui
             $filePath = storage_path('app/private/' . $filename);
-
-            \Illuminate\Support\Facades\Log::info('Caminho do arquivo CORRIGIDO', ['path' => $filePath, 'exists' => file_exists($filePath)]);
 
             if (file_exists($filePath)) {
                 try {
-                    // DEBUG: Mostrar configs do Cloudinary
-                    \Illuminate\Support\Facades\Log::info('Cloudinary configs ANTES do upload', [
-                        'cloud_url' => config('cloudinary.cloud_url') ? substr(config('cloudinary.cloud_url'), 0, 30) . '...' : 'NULL',
-                        'cloud_name' => config('cloudinary.cloud_name'),
-                        'api_key' => config('cloudinary.api_key') ? substr(config('cloudinary.api_key'), 0, 5) . '...' : 'NULL',
-                    ]);
-
                     $cloudinaryService = app(CloudinaryService::class);
-                    // Faz upload passando ID do tenant
                     $url = $cloudinaryService->uploadLogo($filePath, $this->tenant->id);
-                    
-                    \Illuminate\Support\Facades\Log::info('Upload sucesso', ['url' => $url]);
 
-                    // Atualiza a URL no array de dados que será salvo
                     $data['logo_url'] = $url;
                     
                     Notification::make()
@@ -335,7 +316,6 @@ class EditCompanyProfile extends EditTenantProfile
                         ->success()
                         ->send();
                         
-                    // Remove arquivo temporário
                     @unlink($filePath);
                     
                 } catch (\Exception $e) {
@@ -348,15 +328,11 @@ class EditCompanyProfile extends EditTenantProfile
                         ->send();
                 }
             }
-        } else {
-            \Illuminate\Support\Facades\Log::info('Nenhum logo_upload encontrado nos dados');
         }
 
         if (isset($data['logo_upload'])) {
             unset($data['logo_upload']);
         }
-
-        \Illuminate\Support\Facades\Log::info('mutateFormDataBeforeSave RETORNANDO', ['logo_url' => $data['logo_url'] ?? 'NULL']);
 
         return $data;
     }

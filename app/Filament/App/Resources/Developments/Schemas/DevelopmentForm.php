@@ -3,6 +3,7 @@
 namespace App\Filament\App\Resources\Developments\Schemas;
 
 use Filament\Schemas\Components\Section;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
@@ -39,8 +40,20 @@ class DevelopmentForm
                             ->mask('99.999.999/9999-99')
                             ->maxLength(20),
                         TextInput::make('logo_url')
-                            ->label('URL do Logo')
-                            ->url()
+                            ->label('URL do Logo Atual')
+                            ->readOnly()
+                            ->helperText('URL no Cloudinary (gerada ao salvar)')
+                            ->columnSpanFull(),
+                        FileUpload::make('logo_upload')
+                            ->label('Enviar Nova Logo')
+                            ->image()
+                            ->imageEditor()
+                            ->maxSize(2048)
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'])
+                            ->disk('local')
+                            ->directory('temp-uploads')
+                            ->visibility('private')
+                            ->helperText('Formatos: JPG, PNG, WebP, SVG. Máximo: 2MB. Clique em Salvar para enviar.')
                             ->columnSpanFull(),
                     ]),
 
