@@ -313,6 +313,13 @@ class EditCompanyProfile extends EditTenantProfile
 
             if (file_exists($filePath)) {
                 try {
+                    // DEBUG: Mostrar configs do Cloudinary
+                    \Illuminate\Support\Facades\Log::info('Cloudinary configs ANTES do upload', [
+                        'cloud_url' => config('cloudinary.cloud_url') ? substr(config('cloudinary.cloud_url'), 0, 30) . '...' : 'NULL',
+                        'cloud_name' => config('cloudinary.cloud_name'),
+                        'api_key' => config('cloudinary.api_key') ? substr(config('cloudinary.api_key'), 0, 5) . '...' : 'NULL',
+                    ]);
+
                     $cloudinaryService = app(CloudinaryService::class);
                     // Faz upload passando ID do tenant
                     $url = $cloudinaryService->uploadLogo($filePath, $this->tenant->id);
