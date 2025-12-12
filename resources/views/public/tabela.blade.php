@@ -322,7 +322,7 @@
                             </div>
                         </div>
 
-                        {{-- Chaves --}}
+                        {{-- Chaves --}} 
                         <div class="payment-item">
                             <span class="payment-label">Chaves ({{ isset($development) ? rtrim(rtrim(number_format($development->keys_percent, 2), '0'), '.') : '10' }}%)</span>
                             <div class="text-right">
