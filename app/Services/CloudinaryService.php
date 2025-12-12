@@ -40,8 +40,8 @@ class CloudinaryService
         $defaultOptions = [
             'folder' => config('cloudinary.folder') . '/' . $folder,
             'transformation' => [
-                'width' => 500,
-                'height' => 500,
+                'width' => 1200,
+                'height' => 1200,
                 'crop' => 'limit',
                 'quality' => 'auto',
                 'fetch_format' => 'auto',
@@ -64,8 +64,8 @@ class CloudinaryService
             'public_id' => 'logo',
             'overwrite' => true,
             'transformation' => [
-                'width' => 400,
-                'height' => 400,
+                'width' => 1200,
+                'height' => 1200,
                 'crop' => 'limit',
                 'quality' => 'auto',
                 'fetch_format' => 'auto',
