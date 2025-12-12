@@ -12,6 +12,14 @@ class CloudinaryService
 
     public function __construct()
     {
+        // DEBUG: Log para verificar o que está sendo lido
+        \Illuminate\Support\Facades\Log::info('CloudinaryService INIT', [
+            'cloud_url' => config('cloudinary.cloud_url') ? 'SET' : 'NULL',
+            'cloud_name' => config('cloudinary.cloud_name') ? 'SET' : 'NULL',
+            'api_key' => config('cloudinary.api_key') ? 'SET' : 'NULL',
+            'api_secret' => config('cloudinary.api_secret') ? 'SET' : 'NULL',
+        ]);
+
         // Usa config() para funcionar corretamente em produção com cache
         $cloudinaryUrl = config('cloudinary.cloud_url');
         
