@@ -228,7 +228,7 @@
 
         {{-- Footer --}}
         <footer class="footer-v4">
-            <p class="footer-text">&copy; {{ date('Y') }} {{ $company->name }}. Todos os direitos reservados.</p>
+            <p class="footer-text">&copy; {{ date('Y') }} Todos os direitos reservados.</p>
         </footer>
 
         {{-- Details Modal --}}
