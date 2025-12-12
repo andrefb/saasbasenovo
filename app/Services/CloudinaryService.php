@@ -12,8 +12,8 @@ class CloudinaryService
 
     public function __construct()
     {
-        // Usa sempre array de configuração (URL pode falhar em produção)
-        Configuration::instance([
+        // Passa a configuração diretamente no construtor (evita problemas com singleton)
+        $this->cloudinary = new Cloudinary([
             'cloud' => [
                 'cloud_name' => config('cloudinary.cloud_name'),
                 'api_key' => config('cloudinary.api_key'),
@@ -23,8 +23,6 @@ class CloudinaryService
                 'secure' => true,
             ],
         ]);
-
-        $this->cloudinary = new Cloudinary();
     }
 
     /**
