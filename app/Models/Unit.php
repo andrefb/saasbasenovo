@@ -48,56 +48,57 @@ class Unit extends Model
 
     // ==========================================
     // ACCESSORS - Valores calculados de pagamento
+    // Todos arredondados para 2 casas decimais (regra financeira)
     // ==========================================
 
     public function getDownPaymentValueAttribute(): float
     {
         $percent = $this->development?->down_payment_percent ?? 0;
-        return (float) $this->price * ($percent / 100);
+        return round((float) $this->price * ($percent / 100), 2);
     }
 
     public function getMonthlyValueAttribute(): float
     {
         $percent = $this->development?->monthly_percent ?? 0;
-        return (float) $this->price * ($percent / 100);
+        return round((float) $this->price * ($percent / 100), 2);
     }
 
     public function getMonthlyInstallmentValueAttribute(): float
     {
         $installments = $this->development?->monthly_installments ?? 0;
         if ($installments <= 0) return 0;
-        return $this->monthly_value / $installments;
+        return round($this->monthly_value / $installments, 2);
     }
 
     public function getAnnualValueAttribute(): float
     {
         $percent = $this->development?->annual_percent ?? 0;
-        return (float) $this->price * ($percent / 100);
+        return round((float) $this->price * ($percent / 100), 2);
     }
 
     public function getAnnualInstallmentValueAttribute(): float
     {
         $installments = $this->development?->annual_installments ?? 0;
         if ($installments <= 0) return 0;
-        return $this->annual_value / $installments;
+        return round($this->annual_value / $installments, 2);
     }
 
     public function getKeysValueAttribute(): float
     {
         $percent = $this->development?->keys_percent ?? 0;
-        return (float) $this->price * ($percent / 100);
+        return round((float) $this->price * ($percent / 100), 2);
     }
 
     public function getPostKeysValueAttribute(): float
     {
         $percent = $this->development?->post_keys_percent ?? 0;
-        return (float) $this->price * ($percent / 100);
+        return round((float) $this->price * ($percent / 100), 2);
     }
 
     public function getPostKeysInstallmentValueAttribute(): float
     {
         $installments = $this->development?->post_keys_installments ?? 0;
         if ($installments <= 0) return 0;
-        return $this->post_keys_value / $installments;
+        return round($this->post_keys_value / $installments, 2);
     }
 }
