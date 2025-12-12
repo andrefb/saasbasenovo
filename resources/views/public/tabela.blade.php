@@ -398,6 +398,11 @@
                     this.selectedUnit = unit;
                     this.showDetails = true;
                     document.body.style.overflow = 'hidden';
+                    // Reset scroll do modal para o topo
+                    this.$nextTick(() => {
+                        const modal = document.querySelector('.modal-content');
+                        if (modal) modal.scrollTop = 0;
+                    });
                 },
 
                 closeDetails() {
@@ -409,7 +414,7 @@
                     this.floorPlanImage = imageUrl;
                     this.floorPlanUnit = unitName;
                     this.showFloorPlan = true;
-                    this.showDetails = false;
+                    // Modal de detalhes permanece aberto (empilhado)
                 },
 
                 closeFloorPlan() {
