@@ -7,6 +7,14 @@
     <meta name="robots" content="noindex, nofollow">
     <title>{{ $title ?? 'Tabela de Vendas' }}</title>
 
+    {{-- Open Graph (WhatsApp, Facebook, etc) --}}
+    <meta property="og:title" content="{{ $ogTitle ?? $title ?? 'Tabela de Vendas' }}">
+    <meta property="og:description" content="{{ $ogDescription ?? $metaDescription ?? 'Tabela de vendas e disponibilidade' }}">
+    <meta property="og:type" content="website">
+    @if(isset($ogImage))
+    <meta property="og:image" content="{{ $ogImage }}">
+    @endif
+
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏢</text></svg>">
 

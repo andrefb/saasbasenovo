@@ -1,4 +1,9 @@
-<x-layouts.public :title="$company->name . ' - Tabela de Vendas'">
+<x-layouts.public 
+    :title="$company->name . ' - Tabela de Vendas'"
+    :ogTitle="isset($development) ? $development->name : 'Tabela de Vendas'"
+    :ogDescription="'Tabela de Vendas - ' . $company->name"
+    :ogImage="isset($development) && $development->logo_url ? $development->logo_url : null"
+>
     <div x-data="tabelaApp()" class="min-h-screen">
 
         {{-- Header --}}
